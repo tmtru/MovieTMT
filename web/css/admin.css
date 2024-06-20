@@ -348,10 +348,7 @@ a {
     margin-bottom: 20px;
 }
 
-.table {
-    height: 200px;
-    
-}
+
 
 table {
     width: 100%;
@@ -496,4 +493,56 @@ tr .add-a{
     .sidebar {
         padding: 10px;
     }
+}
+.search {
+    width: 270px;
+    position: relative;
+    display: flex;
+}
+
+.searchTerm {
+    position: relative;
+    width: 270px;
+    border-right: none;
+    padding: 5px;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    color: #9DBFAF;
+}
+
+.searchTerm:focus {
+    color: #00B4CC;
+}
+
+.searchButton {
+    position: absolute;
+    top:0;
+    right:0;
+    width: 40px;
+    height: 100%;
+    background: #ffffff;
+    text-align: center;
+    color: #4542da;
+    cursor: pointer;
+    font-size: 20px;
+}
+#poster-link div{
+    max-width: 150px;
+    overflow:auto;
+    max-height: 100px;
+}
+#content p{
+    min-width: 200px;
+    max-width: 500px;
+    max-height: 100px;
+    overflow:auto;
+    
+}
+.edit-film{
+    color: red !important;
+    border-bottom: 1px solid red;
+}
+.table {
+    overflow:auto !important;
+    
 }
