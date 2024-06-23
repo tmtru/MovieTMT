@@ -19,7 +19,6 @@
     </head>
 
     <body>
-
         <jsp:include page="header.jsp" /> 
         <!-- Slide section -->
         <div id="carouselExampleCaptions" class="carousel slide movie-slide" data-bs-ride="carousel" >

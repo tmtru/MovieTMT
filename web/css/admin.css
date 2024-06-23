@@ -56,7 +56,7 @@ a {
     color: #fff;
 }
 
-.active {
+a.active {
     background-color: #5073fb;
     color: #fff;
 }
@@ -507,7 +507,7 @@ tr .add-a{
     padding: 5px;
     border-radius: 5px 0 0 5px;
     outline: none;
-    color: #9DBFAF;
+    color: #06175b;
 }
 
 .searchTerm:focus {
@@ -529,12 +529,12 @@ tr .add-a{
 #poster-link div{
     max-width: 150px;
     overflow:auto;
-    max-height: 100px;
+    max-height: 250px;
 }
 #content p{
     min-width: 200px;
     max-width: 500px;
-    max-height: 100px;
+    max-height: 250px;
     overflow:auto;
     
 }
@@ -545,4 +545,7 @@ tr .add-a{
 .table {
     overflow:auto !important;
     
+}
+.breadcrumb-item.active {
+    color: #999999;
 }

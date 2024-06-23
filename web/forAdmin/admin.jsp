@@ -31,19 +31,19 @@
                         </a>
                     </li>
                     <li>
-                        <a href="films.jsp" class="${pageContext.request.servletPath== '/forAdmin/films.jsp' ? 'active':'' }">
+                        <a href="search" class="${(pageContext.request.servletPath== '/forAdmin/films.jsp' || pageContext.request.servletPath== '/forAdmin/filmDetail.jsp') ? 'active':'' }">
                             <span class="icon icon-2"><i class="fa-solid fa-clapperboard"></i></span>
                             <span class="sidebar--item">Movies</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
-                            <span class="icon icon-3"><i class="fa-solid fa-images"></i></span>
+                        <a href="banner.jsp" class="${pageContext.request.servletPath== '/forAdmin/banner.jsp' ? 'active':'' }">
+                            <span class="icon icon-2"><i class="fa-solid fa-images"></i></span>
                             <span class="sidebar--item" style="white-space: nowrap;">Banner</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="user.jsp" class="${pageContext.request.servletPath== '/forAdmin/user.jsp' ? 'active':'' }">
                             <span class="icon icon-4"><i class="fa-solid fa-user"></i></span>
                             <span class="sidebar--item">Users</span>
                         </a>
@@ -62,12 +62,6 @@
                     </li>
                 </ul>
                 <ul class="sidebar--bottom-items">
-                    <li>
-                        <a href="#">
-                            <span class="icon icon-7"><i class="ri-settings-3-line"></i></span>
-                            <span class="sidebar--item">Settings</span>
-                        </a>
-                    </li>
                     <li>
                         <a href="../home.jsp">
                             <span class="icon icon-8"><i class="ri-logout-box-r-line"></i></span>

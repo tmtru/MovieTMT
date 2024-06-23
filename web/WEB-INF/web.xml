@@ -10,7 +10,31 @@
     </servlet>
     <servlet>
         <servlet-name>listFilms</servlet-name>
-        <servlet-class>controller.listFilms</servlet-class>
+        <servlet-class>controller.homeFilms</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>addNewFilms</servlet-name>
+        <servlet-class>controller.addNewFilms</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>search</servlet-name>
+        <servlet-class>controller.search</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>filmDetail</servlet-name>
+        <servlet-class>controller.filmDetail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>filmEdit</servlet-name>
+        <servlet-class>controller.filmEdit</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>banner</servlet-name>
+        <servlet-class>controller.bannerAction</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>manageUsers</servlet-name>
+        <servlet-class>controller.manageUsers</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>login</servlet-name>
@@ -23,5 +47,29 @@
     <servlet-mapping>
         <servlet-name>listFilms</servlet-name>
         <url-pattern>/films</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>addNewFilms</servlet-name>
+        <url-pattern>/forAdmin/addfilm</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>search</servlet-name>
+        <url-pattern>/forAdmin/search</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>filmDetail</servlet-name>
+        <url-pattern>/forAdmin/filmdetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>filmEdit</servlet-name>
+        <url-pattern>/forAdmin/filmedit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>banner</servlet-name>
+        <url-pattern>/forAdmin/banner</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>manageUsers</servlet-name>
+        <url-pattern>/forAdmin/manageusers</url-pattern>
     </servlet-mapping>
 </web-app>

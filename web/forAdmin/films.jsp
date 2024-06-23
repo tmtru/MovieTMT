@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="java.util.List, java.util.ArrayList, model.movie, dal.MovieDAO"%>
+<%@page import="java.util.List, java.util.ArrayList, model.movie,model.genre, dal.MovieDAO, dal.GenreDAO"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,6 +19,7 @@
         <script src="https://kit.fontawesome.com/aab0c35bef.js" crossorigin="anonymous"></script>
         <script src="../js/main.js"></script>
         <script src="../js/admin.js"></script>
+
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
     <body>
@@ -27,30 +28,32 @@
             <div class="title">
                 <h2 class="section--title">Overview</h2>
             </div>
-            <div class="overview col-xl-6">
+            <div class="overview d-flex">
                 <div class="cards">
                     <div class="card card-1">
                         <div class="card--data">
                             <div class="card--content">
                                 <h5 class="card--title">Tổng số phim</h5>
-                                <h1>152</h1>
+                                <% MovieDAO dao = new MovieDAO();
+                                int numberOfFilms=dao.numberOfFilms();
+                                request.setAttribute("nbfilms", numberOfFilms);
+
+                                %>
+                                <h1>${nbfilms}</h1>
                             </div>
                             <i class="fa-solid fa-film card--icon--lg"></i>
                         </div>
                     </div>
 
+
                 </div>
-                <select name="date" id="date" class="dropdown mt-3">
+                <select name="date" id="date" class="dropdown mt-3 g-3 ms-3" style="max-height: 40px;">
                     <option value="today">Today</option>
                     <option value="lastweek">Last Week</option>
                     <option value="lastmonth">Last Month</option>
                     <option value="lastyear">Last Year</option>
                     <option value="alltime">All Time</option>
                 </select>
-
-                <div class="chart">
-                    <canvas id="myChart"></canvas>
-                </div>
             </div>
             <!--            <div class="recent--patients">
                             <div class="title">
@@ -86,15 +89,17 @@
                                     </tbody>
                                 </table>
                             </div>
+            
                         </div>-->
+
             <div class="recent--patients">
                 <div class="title">
                     <h2 class="section--title">Danh sách phim</h2>
                 </div>
                 <button type="button" class="btn btn-primary add mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Thêm phim mới
-                </button>
 
+                </button>
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -102,16 +107,18 @@
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm Phim mới</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
                             </div>
-                            <div class="modal-body">
-                                <form class="row g-3" action="addMovies" method="post">
+
+                            <form id="movieForm" action="addfilm" method="post" onsubmit="return validateForm(event)">
+                                <div class="modal-body row g-3">
                                     <div class="col-md-6">
                                         <label for="inputEmail4" class="form-label">Title</label>
-                                        <input type="email" class="form-control" name="title" placeholder="Viết hoa hết chữ cái đầu" required>
+                                        <input id="title" type="text" class="form-control" name="title" value="" placeholder="Viết hoa hết chữ cái đầu" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="inputPassword4" class="form-label">Ngày phát sóng</label>
-                                        <input type="password" class="form-control" name="realeaseDate" placeholder="YYYY-MM-DD" >
+                                        <input id="releaseDate" type="date" class="form-control" name="releaseDate" placeholder="YYYY-MM-DD" >
                                     </div>
                                     <div class="col-12">
                                         <label for="inputAddress" class="form-label">Nội dung phim</label>
@@ -127,27 +134,39 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="inputZip" class="form-label">Số tập</label>
-                                        <input type="number" class="form-control" name="numberOfEps">
+                                        <input type="number" class="form-control" name="numberOfEps" >
                                     </div>
+                                    <% 
+                                        GenreDAO dao1=new GenreDAO();
+                                        ArrayList<genre> genres=dao1.getAllGenres();
+                                        request.setAttribute("genres", genres);
+                                    %>
                                     <div class="col-md-12">
                                         <label for="inputState" class="form-label">Genre</label>
-                                        <select id="inputState" class="form-select mb-1">
-                                            <option selected>Choose...</option>
-                                            <option>...</option>
+                                        <select name="genre1" id="inputState" class="form-select mb-1">
+                                            <option selected></option>
+                                            <c:forEach items="${genres}" var="g">
+                                                <option value="${g.genreName}">${g.genreName}</option>
+                                            </c:forEach>
                                         </select>
-                                        <select id="inputState" class="form-select mb-1">
-                                            <option selected>Choose...</option>
-                                            <option>...</option>
+                                        <select name="genre2" id="inputState" class="form-select mb-1">
+                                            <option selected></option>
+                                            <c:forEach items="${genres}" var="g">
+                                                <option value="${g.genreName}">${g.genreName}</option>
+                                            </c:forEach>
                                         </select>
-                                        <select id="inputState" class="form-select mb-1">
-                                            <option selected>Choose...</option>
-                                            <option>...</option>
+                                        <select name="genre3" id="inputState" class="form-select mb-1">
+                                            <option selected></option>
+                                            <c:forEach items="${genres}" var="g">
+                                                <option value="${g.genreName}">${g.genreName}</option>
+                                            </c:forEach>
                                         </select>
-                                        <select id="inputState" class="form-select mb-1">
-                                            <option selected>Choose...</option>
-                                            <option>...</option>
+                                        <select name="genre4" id="inputState" class="form-select mb-1">
+                                            <option selected></option>
+                                            <c:forEach items="${genres}" var="g">
+                                                <option value="${g.genreName}">${g.genreName}</option>
+                                            </c:forEach>
                                         </select>
-
                                     </div>
                                     <div class="col-12">
                                         <label for="inputAddress" class="form-label">Diễn viên</label>
@@ -164,7 +183,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="inputZip" class="form-label">Rating khởi điểm</label>
-                                        <input type="number" class="form-control" name="rating" placeholder="8">
+                                        <input id="rating" type="text" class="form-control" name="rating" placeholder="8" value="">
                                     </div>
                                     <div class="col-12">
                                         <div class="form-check">
@@ -174,31 +193,55 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="col-12">
-                                        <button type="submit" class="btn btn-primary">Sign in</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
-                            </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary" >Thêm phim</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <form class="search mb-3">
-                    <input type="text" class="searchTerm" placeholder="Search theo tên phim">
-                    <button type="submit" class="searchButton">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </form>
-                <div class="table table-movies">
-                    <% 
-                        MovieDAO dao=new MovieDAO();
-                        ArrayList<movie> movies=dao.getAllMovieEach50();
-                        request.setAttribute("movies", movies);
-                    %>
+                <div class="d-flex justify-content-between">
+                    <form action="search" class="search mb-3 mt-1" style="max-height: 45px">
+                        <input type="text" name="search" class="searchTerm" placeholder="Search theo tên phim" value="${search}">
+                        <button type="submit" class="searchButton">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </form>
 
+                    <div class="row">
+                        <div class="dropdown mb-3 text-center" style="background-color: transparent !important;">
+                            <a class="btn btn-secondary dropdown-toggle" href="search?search=${search}&by=${by}&genre=" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Thể loại
+                            </a>
+
+                            <ul class="dropdown-menu dropdown-menu-dark">
+                                <li><a class="dropdown-item" href="search?search=${search}&by=${by}">Tất cả</a></li>
+                                    <c:forEach items="${genres}" var="g">
+                                    <li><a class="dropdown-item" href="search?search=${search}&by=${by}&genre=${g.genreName}">${g.genreName}</a></li>
+                                    </c:forEach>
+                            </ul>
+                        </div>
+
+                        <div class="dropdown mb-3" style="background-color: transparent !important;">
+                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Sắp xếp theo
+                            </a>
+
+                            <ul class="dropdown-menu dropdown-menu-dark">
+                                <li><a class="dropdown-item" href="search?search=${search}&genre=${genre}">Mới thêm nhất</a></li>
+                                <li><a class="dropdown-item" href="search?search=${search}&by=title&genre=${genre}">Tên</a></li>
+                                <li><a class="dropdown-item" href="search?search=${search}&by=date&genre=${genre}">Ngày ra mắt</a></li>
+                                <li><a class="dropdown-item" href="search?search=${search}&by=view&genre=${genre}">Lượt truy cập</a></li>
+                                <li><a class="dropdown-item" href="search?search=${search}&by=rating&genre=${genre}">Rating</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="table table-movies">
                     <table>
                         <thead>
                             <tr>
@@ -222,20 +265,7 @@
                                         </div>
                                     </td>
 
-                                    <td><a href="" class="edit-film">Detail</a></td>
-
-                                </tr>
-                                <tr>
-                                    <td>${m.title}</td>
-                                    <td>${m.genre}</td>
-                                    <td id="content" colspan="3"><p>${m.content}</p></td>
-                                    <td id="poster-link">
-                                        <div>
-                                            <img style="max-width: 100%" src="${m.posterLink}" />
-                                        </div>
-                                    </td>
-
-                                    <td><a href="" class="edit-film">Detail</a></td>
+                                    <td><a href="filmDetail.jsp?id=${m.id}" class="edit-film">Detail</a></td>
 
                                 </tr>
                             </c:forEach>
@@ -270,6 +300,7 @@
             }
         });
     </script>
+    <script src="../js/addNewFilms.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
