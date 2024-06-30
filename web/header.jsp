@@ -38,9 +38,9 @@
                                 </div>
                                 <div class="menu-main-menu-container offcanvas-body">
                                     <ul id="top-menu" class="navbar-nav ml-auto">
-                                        <li class="menu-item ${pageContext.request.servletPath == '/home.jsp' ? 'active' : ''}"><a href="home.jsp">Home</a></li>
-                                        <li class="menu-item ${pageContext.request.servletPath == '/movie.jsp' ? 'active' : ''}"><a href="movie.jsp">Movies</a></li>
-                                        <li class="menu-item ${pageContext.request.servletPath == '/genre.jsp' ? 'active' : ''}"><a href="genre.jsp">Genres</a></li>
+                                        <li class="menu-item ${pageContext.request.servletPath == '/home.jsp' ? 'active' : ''}"><a href="home.jsp">Trang chủ</a></li>
+                                        
+                                        <li class="menu-item ${pageContext.request.servletPath == '/genre.jsp' ? 'active' : ''}"><a href="genre.jsp">Thể loại</a></li>
                                                                                 <li class="menu-item"><a href="#">Shows</a></li>
                                         <li class="menu-item">
                                             <a href="#">Contact Us</a>
@@ -307,6 +307,12 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </li>
+                                        <li class="nav-item nav-icon">
+                                             <a href="login.jsp" class="">
+                                                <i class="fa-solid fa-right-from-bracket"></i>
+                                            </a>
+
                                         </li>
                                     </ul>
                                 </div>

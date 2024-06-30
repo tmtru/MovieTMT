@@ -14,6 +14,7 @@
         <title>JSP Page</title>
         <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="../css/admin.css">
+        <link rel="stylesheet" href="../css/modelDelete.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
         <script src="https://kit.fontawesome.com/aab0c35bef.js" crossorigin="anonymous"></script>
@@ -55,43 +56,6 @@
                     <option value="alltime">All Time</option>
                 </select>
             </div>
-            <!--            <div class="recent--patients">
-                            <div class="title">
-                                <h2 class="section--title">Hoạt động gần đây</h2>
-                                <a href="#" class="add">Xem chi tiết</a>
-                            </div>
-                            <div class="table">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Tên</th>
-                                            <th>Mục tiêu</th>
-                                            <th>Thời gian</th>
-                                            <th>Ghi chú</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="delete">DELETE</td>
-                                            <td>Phim: ???</td>
-                                            <td>30/07/2022</td>
-                                            <td>None</td>
-            
-                                        </tr>
-                                        <tr>
-                                            <td class="add-a">ADD</td>
-                                            <td>Phim: ???</td>
-                                            <td>31/07/2022</td>
-                                            <td>None</td>
-            
-                                        </tr>
-            
-                                    </tbody>
-                                </table>
-                            </div>
-            
-                        </div>-->
-
             <div class="recent--patients">
                 <div class="title">
                     <h2 class="section--title">Danh sách phim</h2>
@@ -203,35 +167,42 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between flex-wrap">
                     <form action="search" class="search mb-3 mt-1" style="max-height: 45px">
                         <input type="text" name="search" class="searchTerm" placeholder="Search theo tên phim" value="${search}">
                         <button type="submit" class="searchButton">
                             <i class="fa fa-search"></i>
                         </button>
                     </form>
-
                     <div class="row">
-                        <div class="dropdown mb-3 text-center" style="background-color: transparent !important;">
-                            <a class="btn btn-secondary dropdown-toggle" href="search?search=${search}&by=${by}&genre=" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Thể loại
-                            </a>
+                        <div class="dropdown mb-3 mr-5" style="background-color: transparent !important;">
+                            <a class="btn btn-secondary dropdown-toggle" href="search?search=${search}&by=${by}&genre=" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 150px">
+                                <c:if test="${param.genre==null || param.genre eq ''}">Thể loại</c:if>
+                                <c:if test="${param.genre!=null}">${param.genre}</c:if>
 
-                            <ul class="dropdown-menu dropdown-menu-dark">
-                                <li><a class="dropdown-item" href="search?search=${search}&by=${by}">Tất cả</a></li>
+                                </a>
+
+
+                                <ul class="dropdown-menu dropdown-menu-dark">
+                                    <li><a class="dropdown-item" href="search?search=${search}&by=${by}">Tất cả</a></li>
                                     <c:forEach items="${genres}" var="g">
                                     <li><a class="dropdown-item" href="search?search=${search}&by=${by}&genre=${g.genreName}">${g.genreName}</a></li>
                                     </c:forEach>
                             </ul>
                         </div>
+                        <div class="dropdown mb-3 ms-5" style="background-color: transparent !important;">
+                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 140px">
+                                <c:if test="${param.by==null || param.by eq ''}">Sắp xếp theo</c:if>
+                                <c:if test="${param.by eq 'new'}">Mới thêm nhất</c:if>
+                                <c:if test="${param.by eq 'title'}">Tên</c:if>
+                                <c:if test="${param.by eq 'date'}">Ngày ra mắt</c:if>
+                                <c:if test="${param.by eq 'view'}">Lượt truy cập</c:if>
+                                <c:if test="${param.by eq 'rating'}">Rating</c:if>
 
-                        <div class="dropdown mb-3" style="background-color: transparent !important;">
-                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Sắp xếp theo
-                            </a>
+                                </a>
 
-                            <ul class="dropdown-menu dropdown-menu-dark">
-                                <li><a class="dropdown-item" href="search?search=${search}&genre=${genre}">Mới thêm nhất</a></li>
+                                <ul class="dropdown-menu dropdown-menu-dark">
+                                    <li><a class="dropdown-item" href="search?search=${search}&by=new&genre=${genre}">Mới thêm nhất</a></li>
                                 <li><a class="dropdown-item" href="search?search=${search}&by=title&genre=${genre}">Tên</a></li>
                                 <li><a class="dropdown-item" href="search?search=${search}&by=date&genre=${genre}">Ngày ra mắt</a></li>
                                 <li><a class="dropdown-item" href="search?search=${search}&by=view&genre=${genre}">Lượt truy cập</a></li>
@@ -243,7 +214,7 @@
                 </div>
                 <div class="table table-movies">
                     <table>
-                        <thead>
+                        <thead style=" background-color: rgb(146 150 255 / 13%); ">
                             <tr>
                                 <th>Tên</th>
                                 <th>Thể loại</th>
@@ -253,53 +224,101 @@
                             </tr>
                         </thead>
 
-                        <tbody >
-                            <c:forEach items="${movies}" var="m">
-                                <tr>
-                                    <td>${m.title}</td>
-                                    <td>${m.genre}</td>
-                                    <td id="content" colspan="3"><p>${m.content}</p></td>
-                                    <td id="poster-link">
-                                        <div>
-                                            <img style="max-width: 100%" src="${m.posterLink}" />
-                                        </div>
-                                    </td>
+                        <% 
+                            // Retrieve existing query parameters
+                            String queryString = request.getQueryString();
+                            if (queryString == null) {
+                                queryString = "";
+                            } else {
+                                // Remove any existing page parameter from the query string
+                                queryString = queryString.replaceAll("&?page=\\d*", "");
+                                if (!queryString.isEmpty() && !queryString.endsWith("&")) {
+                                    queryString += "&";
+                                }
+                            }
+                            request.setAttribute("queryString",queryString );
+                        %>
 
-                                    <td><a href="filmDetail.jsp?id=${m.id}" class="edit-film">Detail</a></td>
+                        <tbody>
+                            <c:set var="page" value="${param.page != null ? param.page : 0}" />
+                            <c:set var="items" value="0" />
+                            <c:set var="limitItems" value="5" />
+                            <c:set var="startItem" value="${page * limitItems}" />
+                            <c:set var="endItem" value="${startItem + limitItems}" />
+                            <c:set var="numOfPages" value="${(movies.size() + limitItems - 1) / limitItems}" />
 
-                                </tr>
+                            <c:forEach var="m" items="${movies}" varStatus="status">
+                                <c:if test="${status.index >= startItem && status.index < endItem}">
+                                    <tr>
+                                        <td>${m.title}</td>
+                                        <td>${m.genre}</td>
+                                        <td id="content" colspan="3"><p>${m.content}</p></td>
+                                        <td id="poster-link">
+                                            <div>
+                                                <img style="max-width: 100%" src="${m.posterLink}" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a href="filmDetail.jsp?id=${m.id}" class="edit-film" style="color: #bcbcff !important;">| Chi tiết</a><br/><br/>
+                                            <div class="">
+                                                <!-- Button HTML (to Trigger Modal) -->
+                                                <a href="#myModal${m.id}" style="color: red !important;" data-bs-toggle="modal" data-bs-target="#myModal${m.id}">| Xóa Phim</a>
+                                            </div>
+                                            <!-- Modal HTML -->
+                                            <div id="myModal${m.id}" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-confirm">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header flex-column">
+                                                            <div class="icon-box">
+                                                                <i class="material-icons"><i class="fa-solid fa-circle-xmark"></i></i>
+                                                            </div>
+                                                            <h4 class="modal-title w-100">Are you sure?</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>Bạn có chắc chắn bạn muốn xóa dữ liệu về bộ phim </p>
+                                                            <h5>"${m.title}"</h5>
+                                                        </div>
+                                                        <div class="modal-footer justify-content-center">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                            <button type="button" class="btn btn-danger">
+                                                                <a href="filmdelete?id=${m.id}" class="edit-film" style="color: white !important;">Xóa Phim</a>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </c:if>
                             </c:forEach>
-
                         </tbody>
                     </table>
+
+                </div>
+                <div class="pagination-bar">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <c:if test="${page > 0}">
+                                <li class="page-item">
+                                    <a class="page-link" href="?${queryString}page=${page - 1}">Previous</a>
+                                </li>
+                            </c:if>
+                            <c:forEach begin="0" end="${numOfPages - 1}" var="i">
+                                <li class="page-item ${page == i ? 'active' : ''}">
+                                    <a class="page-link" href="?${queryString}page=${i}">${i + 1}</a>
+                                </li>
+                            </c:forEach>
+                            <c:if test="${page < numOfPages - 2}">
+                                <li class="page-item">
+                                    <a class="page-link" href="?${queryString}page=${page + 1}">Next</a>
+                                </li>
+                            </c:if>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
     </body>
-    <script>
-        const ctx = document.getElementById('myChart');
-
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                datasets: [{
-                        label: 'Tổng số phim',
-                        data: [10, 20, 30, 25, 35, 45, 50], // Thay đổi dữ liệu tại đây
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
     <script src="../js/addNewFilms.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

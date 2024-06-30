@@ -5,18 +5,26 @@
 
 package controller;
 
+import dal.AccountDAO;
+import dal.HistoryDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.account;
+import model.movie;
 
 /**
  *
  * @author Admin
  */
-public class listFilms extends HttpServlet {
+public class historyLoad extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -33,10 +41,10 @@ public class listFilms extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet listFilms</title>");  
+            out.println("<title>Servlet history</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet listFilms at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet history at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -53,7 +61,9 @@ public class listFilms extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        
     } 
 
     /** 
@@ -66,7 +76,23 @@ public class listFilms extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        HistoryDAO daoh=new HistoryDAO();
+        AccountDAO daoa=new AccountDAO();
+        HttpSession session = request.getSession();
+        String comment =request.getParameter("comment");
+        movie m=(movie) session.getAttribute("watchingmovie");
+        int movieid=Integer.parseInt(m.getId());
+        account user=(account) session.getAttribute("account");
+        int userid=daoa.getIDbyEmail(user.getEmail());
+        
+        try {
+            daoh.addHistory(userid, movieid, 0, comment);
+            response.sendRedirect("movieload");
+        } catch (SQLException ex) {
+            Logger.getLogger(historyLoad.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /** 

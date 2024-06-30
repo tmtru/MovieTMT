@@ -4,6 +4,9 @@
     Author     : Admin
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+<%@page import="jakarta.servlet.http.Cookie,java.util.List, java.util.ArrayList,java.util.Arrays,jakarta.servlet.http.HttpSession, model.movie,model.genre,model.episode, model.account, dal.AccountDAO, dal.MovieDAO, dal.GenreDAO, dal.EpisodeDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -17,49 +20,77 @@
     </head>
     <body>
         <jsp:include page="header.jsp"></jsp:include>
-        <section class="main-container">
+            <section class="main-container">
 
-            <div class="sidebar">
-                <form action="#">
-                    <div class="sidebar-groups">
-                        <h3 class="sg-title">Categories</h3>
-                        <input type="checkbox" id="adventure" name="adventure" value="adventure">
-                        <label for="adventure">Adventure</label><br>
-                        <input type="checkbox" id="action" name="action" value="action">
-                        <label for="action">Action</label><br>
-                        <input type="checkbox" id="animation" name="animation" value="animation">
-                        <label for="animation">Animation</label><br>
-                        <input type="checkbox" id="comedy" name="comedy" value="comedy">
-                        <label for="comedy">Comedy</label><br>
-                        <input type="checkbox" id="science" name="science" value="science">
-                        <label for="science">Science Fiction</label><br>
-                        <input type="checkbox" id="thriller" name="thriller" value="thriller">
-                        <label for="thriller">Thriller</label><br>
-                        <input type="checkbox" id="history" name="history" value="history">
-                        <label for="history">History</label><br>
-                        <input type="checkbox" id="documentary" name="documentary" value="documentary">
-                        <label for="documentary">Documentary</label><br>
-                        <input type="checkbox" id="fantasy" name="fantasy" value="fantasy">
-                        <label for="fantasy">Fantasy</label><br>
-                    </div>
-                    <div class="sidebar-groups">
-                        <h3 class="sg-title">Language</h3>
-                        <input type="checkbox" id="english" name="english" value="english">
-                        <label for="english">English</label><br>
-                        <input type="checkbox" id="spanish" name="spanish" value="spanish">
-                        <label for="spanish">Spanish</label><br>
-                        <input type="checkbox" id="hindi" name="hindi" value="hindi">
-                        <label for="hindi">Hindi</label><br>
-                    </div>
-                    <div class="sidebar-groups">
-                        <h3 class="sg-title">Time</h3>
-                        <input type="radio" id="morning" name="time" value="morning">
-                        <label for="morning">Morning</label><br>
-                        <input type="radio" id="night" name="time" value="night">
-                        <label for="night">Night</label><br>
-                    </div>
-                    <div class="sidebar-groups">
-                        <a href="#" class="btn-l btn">Apply Filters</a>
+                <div class="sidebar">
+                    <form action="#">
+                        <div class="sidebar-groups">
+                        <% 
+                            GenreDAO dao1=new GenreDAO();
+                            ArrayList<genre> genres=dao1.getAllGenres();
+                            request.setAttribute("genres", genres);
+                        %>
+                        <h3 class="sg-title">Bạn muốn xem...</h3>
+                        <div class="search-box">
+                            <div class="form-group position-relative d-flex justify-content-end">
+                                <input type="text" class="text search-input font-size-12"
+                                       placeholder="Type here to search..." />
+                                <button type="submit" class="search-toggle device-search ">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="accordion" id="accordionPanelsStayOpenExample" data-bs-theme="dark">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
+                                        Thể loại
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse">
+                                    <div class="accordion-body">
+                                        <div class="sidebar-groups-content d-flex flex-wrap">
+                                            <c:forEach var="genre" items="${genres}">
+                                                <p class="genre-item" style="font-size: 14px;"><a href="#">${genre.genreName}</a></p>
+                                                </c:forEach>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                                        Quốc gia
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+                                    <div class="accordion-body">
+                                        <div class="sidebar-groups-content d-flex flex-wrap">
+                                            <p class="genre-item" style="font-size: 14px;"><a href="#">Việt Nam</a></p>
+                                            <p class="genre-item" style="font-size: 14px;"><a href="#">Hàn Quốc</a></p>
+                                            <p class="genre-item" style="font-size: 14px;"><a href="#">Trung Quốc</a></p>
+                                            <p class="genre-item" style="font-size: 14px;"><a href="#">Nhật Bản</a></p>
+                                            <p class="genre-item" style="font-size: 14px;"><a href="#">Âu Mỹ</a></p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+                                        Accordion Item #3
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
+                                    <div class="accordion-body">
+                                        <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </form>
             </div>
@@ -344,5 +375,5 @@
         </section>
         <jsp:include page="footer.jsp"/>
     </body>
-            <script src="js/main.js"></script>
+    <script src="js/main.js"></script>
 </html>

@@ -8,18 +8,18 @@ import dal.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import model.account;
 
 /**
  *
  * @author Admin
  */
-public class login extends HttpServlet {
+public class editProfile extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +38,10 @@ public class login extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet login</title>");
+            out.println("<title>Servlet editProfile</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet login at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet editProfile at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -75,54 +75,32 @@ public class login extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
-        String result = "";
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String r = request.getParameter("rem");
-
-        //tạo 3 cookie: username, pass, role
-        Cookie ce = new Cookie("cemail", email);
-        Cookie cp = new Cookie("cpass", password);
-        Cookie cr = new Cookie("crem", r);
-        if (r != null) {//co chon
-            ce.setMaxAge(60 * 60 * 24 * 30);
-            cp.setMaxAge(60 * 60 * 24 * 30);
-            cr.setMaxAge(60 * 60 * 24 * 30);
-        } else {
-            cp.setMaxAge(0);
-            cr.setMaxAge(0);
-        }
-        response.addCookie(ce);
-        response.addCookie(cp);
-        response.addCookie(cr);
-
-        AccountDAO dao = new AccountDAO();
-        account a = dao.getAccountByEmail(email);
-        HttpSession session = request.getSession();
-        session.setAttribute("role", 2);
-        if (email != null && !email.isEmpty() && password != null && !password.isEmpty()) {
-            if (a != null) {
-                if (a.getEmail() != null) {
-                    if (password.equals(a.getPassword())) {
-                        result = "";
-                        request.setAttribute("key", result);
-                        if (a.getRole().equalsIgnoreCase("Admin")) {
-                            session.setAttribute("role", 1);
-                        }
-                        session.setAttribute("account", a);
-                        response.sendRedirect("home");
-                    } else {
-                        result = "Invalid password. Please try again.";
-                        request.setAttribute("key", result);
-                        request.getRequestDispatcher("login.jsp").forward(request, response);
-                    }
-                }
-            } else {
-                result = "Invalid email. Please try again or Create a new account.";
-                request.setAttribute("key", result);
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+        String name = request.getParameter("name");
+        String[] fullname = name.split("\\s+");
+        String firstname = fullname[fullname.length-1];
+        String lastname = "";
+        if (fullname.length>1) {
+            for (int i = 0; i < fullname.length-1; i++) {
+                lastname += fullname[i];
             }
         }
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+        String gender = request.getParameter("gender");
+        String card = request.getParameter("card");
+        HttpSession session = request.getSession();
+        account a = (account) session.getAttribute("account");
+        String error;
+        AccountDAO dao = new AccountDAO();
+        if (dao.getAccountByEmail(email) == null || a.getEmail() != email) {
+            a=dao.editAccount(dao.getIDbyEmail(a.getEmail()),firstname,lastname, email, gender, phone, card, a.getRole(),a.getAccessRight(),a.getPassword(),a.getAvatar() );
+            
+        } else {
+            error = "Email nhập vào phải là duy nhất!";
+        }
+        if (a!=null) session.setAttribute("account", a);
+        response.sendRedirect("profile.jsp");
+
     }
 
     /**

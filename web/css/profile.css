@@ -110,60 +110,31 @@ opacity: 1;
     font-weight: 600;
     color: #c8cae4;
 }
+.edit-profile{
+    display:none;
+}
+.edit-profile .row-profile .col-4{
+    align-self: center;
+}
+.edit-profile input{
+    padding: 5px 7px;
+    background: #ffffff2b;
+    color:white;
+}
 
 
 /* Danh sach theo doi */
-.movie-menu img {
-    width: 100%;
-    aspect-ratio: 16/9;
-    object-fit: cover;
 
-
+.movie-menu .title {
+    color:white;
 }
-.movie-menu .title{
-    color:white ;
+.movie-item{
+    margin-top:7px;
 }
-.movie-menu .movie-infor {
-    transition: none;
-    background: rgba(101, 137, 214, 0);
+.movie-item img{
+    aspect-ratio: 18/25;
 }
 
- .movie-menu .movie-item:hover img {
-    opacity: 0.5;
-    transform: scale(1) !important;
-    border: none !important;
-    /* border-left: 5px solid rgb(47, 104, 180);
-    border-bottom: 5px solid rgb(47, 104, 180); */
-    box-shadow: 0px 0px 15px rgb(124, 124, 212);
-    transition: none;
-}
-
- .movie-menu div.movie-item:hover {
-    padding: 0px 0px !important;
-    transition: none;
-
-}
-
- .movie-menu .movie-infor {
-    position: absolute;
-    left: 50%;
-    top: 43%;
-    transform: translate(-50%, -50%);
-    right: auto;
-    visibility: hidden;
-    font-size: 1rem;
-    transition: none;
-}
-
-.movie-menu .movie-item:hover .movie-infor {
-    visibility: visible;
-    transition: none;
-}
-.movie-no-scroll.movie-menu .movie-item:hover .title {
-    opacity: 1;
-
-
-}
 @media(max-width: 768px) {
     .profile-details {
             padding-left: 2rem !important;
@@ -173,6 +144,5 @@ opacity: 1;
 /*  */
 .edit-profile input{
     border-radius: 6px;
-    background: #FFF;
 }
 

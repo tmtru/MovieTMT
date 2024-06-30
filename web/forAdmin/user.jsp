@@ -66,7 +66,7 @@
                 </div>
                 <div class="table">
                     <table>
-                        <thead>
+                        <thead style=" background-color: rgb(146 150 255 / 13%); ">
                             <tr>
                                 <th>Ảnh đại diện</th>
                                 <th>Tên</th>
@@ -100,7 +100,7 @@
                 </div>
                 <div class="table">
                     <table>
-                        <thead>
+                        <thead style=" background-color: rgb(146 150 255 / 13%); ">
                             <tr>
                                 <th>Ảnh đại diện</th>
                                 <th>Tên</th>

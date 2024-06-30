@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="jakarta.servlet.http.Cookie,java.util.Arrays,java.util.List, java.util.ArrayList, model.movie,model.genre,model.episode,model.account, dal.MovieDAO, dal.GenreDAO, dal.EpisodeDAO, dal.AccountDAO"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -21,43 +22,52 @@
         <!-- Profile section -->
         <c:set var="a" value="${sessionScope.account}"></c:set>
             <div class="profile" style="margin-top:150px">
-                <form active="#" method="post">
-                    <div class="row">
-                        <div class="col-md-3">
+
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <form active="#" method="post">
                             <div class="profile-img">
                                 <img src=${sessionScope.account.avatar} alt="" />
-                                <div class="file btn btn-lg ">
-                                    Change Photo
-                                    <input type="file" name="file" />
-                                </div>
+                            <div class="file btn btn-lg ">
+                                Change Photo
+                                <input type="file" name="file" />
                             </div>
                         </div>
-                        <div class="profile-details col-md-9">
-                            <div class="profile-head">
-                                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
-                                                data-bs-target="#home" type="button" role="tab" aria-controls="home"
-                                                aria-selected="true">Hồ sơ</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile"
-                                                type="button" role="tab" aria-controls="profile" aria-selected="false">Danh sách
-                                            theo dõi</button>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="tab-content profile-tab" id="myTabContent">
-                                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                    <div class="show-profile">
+                    </form>
+                </div>
 
-                                        <div class="row row-profile">
-                                            <div class="col-4">
-                                                <label>Name :</label>
+                <div class="profile-details col-md-9">
+                    <div class="profile-head">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
+                                        data-bs-target="#home" type="button" role="tab" aria-controls="home"
+                                        aria-selected="true">Hồ sơ</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile"
+                                        type="button" role="tab" aria-controls="profile" aria-selected="false">Danh sách
+                                    phim yêu thích</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="save-tab" data-bs-toggle="tab" data-bs-target="#save"
+                                        type="button" role="tab" aria-controls="save" aria-selected="false">Xem sau</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content profile-tab" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div>
+                                <div class="show-profile col-10">
 
-                                            </div>
-                                            <div class="col-8">
-                                                <p>${a.name}</p>
+                                    <div class="row row-profile">
+                                        <div class="col-4">
+                                            <label>Tên :</label>
+
+                                        </div>
+                                        <div class="col-8">
+                                            <p>${a.name}</p>
                                         </div>
                                     </div>
                                     <div class="row row-profile">
@@ -70,7 +80,7 @@
                                     </div>
                                     <div class="row row-profile">
                                         <div class="col-4">
-                                            <label>Phone Number :</label>
+                                            <label>Số điện thoại :</label>
                                         </div>
                                         <div class="col-8">
                                             <c:if test="${a.phoneNumber!=null}"><p>${a.phoneNumber}</p></c:if>
@@ -79,7 +89,7 @@
                                         </div>
                                         <div class="row row-profile">
                                             <div class="col-4">
-                                                <label>Gender :</label>
+                                                <label>Giới tính :</label>
                                             </div>
                                             <div class="col-8">
                                             <c:if test="${a.gender!=null}"><p>${a.gender}</p></c:if>
@@ -88,7 +98,7 @@
                                         </div>
                                         <div class="row row-profile">
                                             <div class="col-4">
-                                                <label>Card Number :</label>
+                                                <label>Số thẻ :</label>
                                             </div>
                                             <div class="col-8">
                                             <c:if test="${a.cardNumber!=null}"><p>${a.cardNumber}</p></c:if>
@@ -103,310 +113,200 @@
                                             <div class="col-8">
                                                 <p>${a.accessRight}</p>
                                         </div>
+                                        <div class="d-flex mt-3">
+                                            <div class="">
+                                                <button class="btn btn-md btn-primary" onclick="showEditProfile()">Chỉnh sửa</button>
+                                            </div>
+                                        </div>   
                                     </div>
-
                                 </div>
-                                <div class="edit-profile">
-                                    <form action="#" method="post">
-                                        <div class="row row-profile">
-                                            <div class="col-4">
-                                                <label>User Id :</label>
-                                            </div>
-                                            <div class="col-8">
-                                                <input type="text" placeholder="?" name="username">
-                                            </div>
-                                        </div>
-                                        <div class="row row-profile">
-                                            <div class="col-4">
-                                                <label>Name :</label>
+                            </div>
+                            <div class="edit-profile">
+                                <form action="editprofile" method="post" class="edit-prof col-10">
 
-                                            </div>
-                                            <div class="col-8">
-                                                <input type="text" placeholder="?" name="firstname">
-                                                <input type="text" placeholder="?" name="lastname">
+                                    <div class="row row-profile">
+                                        <div class="col-4">
+                                            <label>Tên :</label>
+                                        </div>
+                                        <div class="col-8">
+                                            <input type="text" name="name" value="${a.name}"/>
+                                        </div>
+                                    </div>
+                                    <div class="row row-profile">
+                                        <div class="col-4">
+                                            <label>Email :</label>
+                                        </div>
+                                        <div class="col-8">
+                                            <input type="email" name="email" value="${a.email}"/>
+                                        </div>
+                                    </div>
+                                    <div class="row row-profile">
+                                        <div class="col-4">
+                                            <label>Số điện thoại :</label>
+                                        </div>
+                                        <div class="col-8">
+                                            <input type="text" name="phone" value="${a.phoneNumber}"/>
+                                        </div>
+                                    </div>
+                                    <div class="row row-profile">
+                                        <div class="col-4">
+                                            <label>Giới tính :</label>
+                                        </div>
+                                        <div class="col-8">
+                                            <input type="radio" id="male" name="gender" value="male" <c:if test="${a.gender eq 'male'}">checked</c:if> />
+                                                <label for="male" class="me-4" >Male</label>
+                                                <input type="radio" id="female" name="gender" value="female" <c:if test="${a.gender eq 'female'}">checked</c:if>/>
+                                                <label for="female" class="me-4" >Female</label>
+                                                <input type="radio" id="other" name="gender" value="other" <c:if test="${a.gender eq 'other'}">checked</c:if>/>
+                                                <label for="other" >Khác</label>
                                             </div>
                                         </div>
                                         <div class="row row-profile">
                                             <div class="col-4">
-                                                <label>Email :</label>
+                                                <label>Số thẻ :</label>
                                             </div>
                                             <div class="col-8">
-                                                <input type="email" placeholder="?" name="email">
-                                            </div>
+                                                <input type="text" name="card" value="${a.cardNumber}"/>
                                         </div>
-                                        <div class="row row-profile">
-                                            <div class="col-4">
-                                                <label>Phone Number :</label>
-                                            </div>
-                                            <div class="col-8">
-                                                <input type="text" placeholder="?" name="phone">
-                                            </div>
+                                    </div>
+                                    <div class="row row-profile">
+                                        <div class="col-4">
+                                            <label>Cấp thành viên :</label>
                                         </div>
-                                        <div class="row row-profile">
-                                            <div class="col-4">
-                                                <label>Gender :</label>
-                                            </div>
-                                            <div class="col-8">
-                                                <div class="row">
-                                                    <div class="col-4">
-                                                        <input type="radio" id="html" name="gender" value="male">
-                                                        <label for="html">Male</label>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <input type="radio" id="css" name="gender" value="female">
-                                                        <label for="css">Female</label>
-                                                    </div>
-                                                </div>
-
-                                            </div>
+                                        <div class="col-8">
+                                            <input type="text" name="access" value="${a.accessRight}" readonly=""/>
                                         </div>
-                                        <button type="submit"  class="btn">Save</button>
-
-                                    </form>
-                                </div>
+                                    </div>
+                                    <div class="d-flex justify-content-center mt-5">
+                                        <div class="col-4">
+                                            <button type="submit" class="btn btn-md btn-success">Lưu thay đổi</button>
+                                        </div>
+                                    </div>
+                                </form>
 
                             </div>
-                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                <div class="movie-menu movie-no-scroll">
-                                    <div class="d-flex flex-wrap">
-                                        <div class="movie-item">
-                                            <div class="iq-card mb-3">
 
-                                                <div class="movie-poster">
-                                                    <img src="assets/img/mv-birdbox.jpg" class="img-fluid rounded"
-                                                         alt="...">
-                                                </div>
-                                                <div class="movie-infor">
-                                                    <div class="iq-card-body">
-                                                        <h6 class="iq-card-title">Card title</h6>
-                                                        <p class="iq-card-text">
-                                                            content. This content is a little bit longer.</p>
-
-                                                        <a href="#" class="review-button">
-                                                            <i class="fa-solid fa-comment"></i>
-                                                            <span>Review</span>
-                                                        </a>
-                                                        <a href="#" class="watch-button">
-                                                            <i class="fa-solid fa-play"></i>
-                                                            <span>Watch Now</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="title">
-                                                    <h6>Bird Box</h6>
-                                                    <span>Oc 5 2024</span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <div class="movie-item">
-                                            <div class="iq-card mb-3">
-
-                                                <div class="movie-poster">
-                                                    <img src="assets/img/mv-godzillavskong.jpg" class="img-fluid rounded"
-                                                         alt="...">
-                                                </div>
-                                                <div class="movie-infor">
-                                                    <div class="iq-card-body">
-                                                        <h6 class="iq-card-title">Card title</h6>
-                                                        <p class="iq-card-text">This is a wider card with supporting text
-                                                            below as a natural
-                                                            lead-in to additional
-                                                            content. This content is a little bit longer.</p>
-
-                                                        <a href="#" class="review-button">
-                                                            <i class="fa-solid fa-comment"></i>
-                                                            <span>Review</span>
-                                                        </a>
-                                                        <a href="#" class="watch-button">
-                                                            <i class="fa-solid fa-play"></i>
-                                                            <span>Watch Now</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="title">
-                                                    <h6>Godzilla VS Kong</h6>
-                                                    <span>Oc 5 2024</span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <div class="movie-item">
-                                            <div class="iq-card mb-3">
-
-                                                <div class="movie-poster">
-                                                    <img src="assets/img/mv-starwars.webp" class="img-fluid rounded"
-                                                         alt="...">
-                                                </div>
-                                                <div class="movie-infor">
-                                                    <div class="iq-card-body">
-                                                        <h6 class="iq-card-title">Card title</h6>
-                                                        <p class="iq-card-text">This is a wider card with supporting text
-                                                            below as a natural
-                                                            lead-in to additional
-                                                            content. This content is a little bit longer.</p>
-
-                                                        <a href="#" class="review-button">
-                                                            <i class="fa-solid fa-comment"></i>
-                                                            <span>Review</span>
-                                                        </a>
-                                                        <a href="#" class="watch-button">
-                                                            <i class="fa-solid fa-play"></i>
-                                                            <span>Watch Now</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="title">
-                                                    <h6>Godzilla VS Kong</h6>
-                                                    <span>Oc 5 2024</span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <div class="movie-item">
-                                            <div class="iq-card mb-3">
-
-                                                <div class="movie-poster">
-                                                    <img src="assets/img/vd-minhlantruyen.jpg" class="img-fluid rounded"
-                                                         alt="...">
-                                                </div>
-                                                <div class="movie-infor">
-                                                    <div class="iq-card-body">
-                                                        <h6 class="iq-card-title">Card title</h6>
-                                                        <p class="iq-card-text">This is a wider card with supporting text
-                                                            below as a natural
-                                                            lead-in to additional
-                                                            content. This content is a little bit longer.</p>
-
-                                                        <a href="#" class="review-button">
-                                                            <i class="fa-solid fa-comment"></i>
-                                                            <span>Review</span>
-                                                        </a>
-                                                        <a href="#" class="watch-button">
-                                                            <i class="fa-solid fa-play"></i>
-                                                            <span>Watch Now</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="title">
-                                                    <h6>Godzilla VS Kong</h6>
-                                                    <span>Oc 5 2024</span>
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-                                        <div class="movie-item">
-                                            <div class="iq-card mb-3">
-
-                                                <div class="movie-poster">
-                                                    <img src="assets/img/mv-strangerthings.jpg" class="img-fluid rounded"
-                                                         alt="...">
-                                                </div>
-                                                <div class="movie-infor">
-                                                    <div class="iq-card-body">
-                                                        <h6 class="iq-card-title">Card title</h6>
-                                                        <p class="iq-card-text">This is a wider card with supporting text
-                                                            below as a natural
-                                                            lead-in to additional
-                                                            content. This content is a little bit longer.</p>
-
-                                                        <a href="#" class="review-button">
-                                                            <i class="fa-solid fa-comment"></i>
-                                                            <span>Review</span>
-                                                        </a>
-                                                        <a href="#" class="watch-button">
-                                                            <i class="fa-solid fa-play"></i>
-                                                            <span>Watch Now</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="title">
-                                                    <h6>Godzilla VS Kong</h6>
-                                                    <span>Oc 5 2024</span>
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-                                        <div class="movie-item">
-                                            <div class="iq-card mb-3">
-
-                                                <div class="movie-poster">
-                                                    <img src="assets/img/mv-birdbox.jpg" class="img-fluid rounded"
-                                                         alt="...">
-                                                </div>
-                                                <div class="movie-infor">
-                                                    <div class="iq-card-body">
-                                                        <h6 class="iq-card-title">Card title</h6>
-                                                        <p class="iq-card-text">This is a wider card with supporting text
-                                                            below as a natural
-                                                            lead-in to additional
-                                                            content. This content is a little bit longer.</p>
-
-                                                        <a href="#" class="review-button">
-                                                            <i class="fa-solid fa-comment"></i>
-                                                            <span>Review</span>
-                                                        </a>
-                                                        <a href="#" class="watch-button">
-                                                            <i class="fa-solid fa-play"></i>
-                                                            <span>Watch Now</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="title">
-                                                    <h6>Bird Box</h6>
-                                                    <span>Oc 5 2024</span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <div class="movie-item">
-                                            <div class="iq-card mb-3">
-
-                                                <div class="movie-poster">
-                                                    <img src="assets/img/mv-godzillavskong.jpg" class="img-fluid rounded"
-                                                         alt="...">
-                                                </div>
-                                                <div class="movie-infor">
-                                                    <div class="iq-card-body">
-                                                        <h6 class="iq-card-title">Card title</h6>
-                                                        <p class="iq-card-text">This is a wider card with supporting text
-                                                            below as a natural
-                                                            lead-in to additional
-                                                            content. This content is a little bit longer.</p>
-
-                                                        <a href="#" class="review-button">
-                                                            <i class="fa-solid fa-comment"></i>
-                                                            <span>Review</span>
-                                                        </a>
-                                                        <a href="#" class="watch-button">
-                                                            <i class="fa-solid fa-play"></i>
-                                                            <span>Watch Now</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="title">
-                                                    <h6>Bird Box</h6>
-                                                    <span>Oc 5 2024</span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
                         </div>
+                        <%
+                            HttpSession session2 = request.getSession();
+                            account user2 = (account) session2.getAttribute("account");
+                            AccountDAO daoa = new AccountDAO();
+                            String userid2 = String.valueOf(daoa.getIDbyEmail(user2.getEmail()));
+                            Cookie[] cookies = request.getCookies();
+                            List<String> likedMovies = new ArrayList<>();
+                            List<String> savedMovies = new ArrayList<>();
+                            MovieDAO daom=new MovieDAO();
+                            ArrayList<movie> likedDetailMovies = new ArrayList<>();
+                            ArrayList<movie> savedDetailMovies = new ArrayList<>();
+                            if (cookies != null) {
+                                for (Cookie cookie : cookies) {
+                                    if (cookie.getName().equals(userid2+"like")) {
+                                        likedMovies = new ArrayList<>(Arrays.asList(cookie.getValue().split("\\.")));
+                                    }
+                                    if (cookie.getName().equals(userid2+"save")) {
+                                        savedMovies = new ArrayList<>(Arrays.asList(cookie.getValue().split("\\.")));
+                                    }
+                                }
+                            }
+                            for (int i=likedMovies.size()-1; i>=0;i--){
+                                String id=likedMovies.get(i);
+                                movie m=daom.getMovieById(id);
+                                if (m!=null) likedDetailMovies.add(m);
+                            }
+                            for (int i=savedMovies.size()-1; i>=0;i--){
+                                String id=savedMovies.get(i);
+                                movie m=daom.getMovieById(id);
+                                if (m!=null) savedDetailMovies.add(m);
+                            }
+                            request.setAttribute("likedMovies", likedDetailMovies); 
+                            request.setAttribute("savedMovies", savedDetailMovies);     
+                        %>
 
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="movie-menu movie-no-scroll">
+                                <div class="d-flex flex-wrap">
+                                    <c:forEach items="${likedMovies}" var="hmv">
+                                        <div class="movie-item">
+                                            <div class="iq-card mb-3" >
+
+                                                <a href="movieload?movieid=${hmv.id}" class="movie-poster">
+                                                    <img src="${hmv.posterLink}" class="img-fluid rounded" alt="${hmv.title}">
+                                                </a>
+                                                <div class="movie-infor">
+                                                    <div class="iq-card-body">
+                                                        <h5 class="iq-card-title">${hmv.title}</h5>
+                                                        <h7 class="iq-card-text">| Người xem: ${hmv.viewers}</h7><br/>
+                                                        <h7 class="iq-card-text">| Rating: ${hmv.rating}</h7><br/>
+
+
+                                                    </div>
+                                                </div>
+                                                <a href="movieload?movieid=${hmv.id}" class="watch-button">
+                                                    <i class="fa-solid fa-play"></i>
+                                                    <span>Watch Now</span>
+                                                </a>
+                                                <div class="title">
+                                                    <h6>${hmv.title}</h6>
+                                                    <span>${hmv.releaseTime}</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="tab-pane fade" id="save" role="tabpanel" aria-labelledby="save-tab">
+                            <div class="movie-menu movie-no-scroll">
+                                <div class="d-flex flex-wrap">
+                                    <c:forEach items="${savedMovies}" var="smv">
+                                        <div class="movie-item">
+                                            <div class="iq-card mb-3" >
+
+                                                <a href="movieload?movieid=${smv.id}" class="movie-poster">
+                                                    <img src="${smv.posterLink}" class="img-fluid rounded" alt="${smv.title}">
+                                                </a>
+                                                <div class="movie-infor">
+                                                    <div class="iq-card-body">
+                                                        <h5 class="iq-card-title">${smv.title}</h5>
+                                                        <h7 class="iq-card-text">| Người xem: ${smv.viewers}</h7><br/>
+                                                        <h7 class="iq-card-text">| Rating: ${smv.rating}</h7><br/>
+
+
+                                                    </div>
+                                                </div>
+                                                <a href="movieload?movieid=${smv.id}" class="watch-button">
+                                                    <i class="fa-solid fa-play"></i>
+                                                    <span>Watch Now</span>
+                                                </a>
+                                                <div class="title">
+                                                    <h6>${smv.title}</h6>
+                                                    <span>${smv.releaseTime}</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
                     </div>
+
 
                 </div>
 
+            </div>
 
-            </form>
+
+
         </div>
 
         <!-- footer -->
@@ -417,4 +317,5 @@
     </body>
     <script src="js/bootstrap.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/profile.js"></script>
 </html>

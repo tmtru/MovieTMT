@@ -4,22 +4,22 @@
  */
 package controller;
 
-import dal.AccountDAO;
+import dal.EpisodeDAO;
+import dal.MovieDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import model.account;
+import java.util.List;
+import model.episode;
 
 /**
  *
  * @author Admin
  */
-public class login extends HttpServlet {
+public class filmEps extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +38,10 @@ public class login extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet login</title>");
+            out.println("<title>Servlet filmEps</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet login at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet filmEps at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,7 +59,25 @@ public class login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        String messError = "";
+        MovieDAO daom = new MovieDAO();
+        EpisodeDAO daoep = new EpisodeDAO();
+        int movieid = Integer.parseInt(request.getParameter("movieid"));
+        int id = Integer.parseInt(request.getParameter("chapid"));
+        String action = request.getParameter("action");
+        switch (action) {
+            case "delete":
+                daoep.deleteEps(movieid, id);
+                response.sendRedirect("filmDetail.jsp?id=" + movieid);
+                break;
+
+            default:
+                response.sendRedirect("filmDetail.jsp?id=" + movieid);
+                break;
+        }
+
     }
 
     /**
@@ -73,56 +91,46 @@ public class login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //xu li add new eps
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
-        String result = "";
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String r = request.getParameter("rem");
+        String messError = "";
+        MovieDAO daom = new MovieDAO();
+        EpisodeDAO daoep = new EpisodeDAO();
+        int movieid = Integer.parseInt(request.getParameter("movieid"));
+        int id = Integer.parseInt(request.getParameter("chapid"));
+        String action = request.getParameter("action");
+        String name = request.getParameter("chapname");
+        int length = Integer.parseInt(request.getParameter("length"));
+        String access = request.getParameter("access");
+        String thumbnail=request.getParameter("thumbnail");
 
-        //tạo 3 cookie: username, pass, role
-        Cookie ce = new Cookie("cemail", email);
-        Cookie cp = new Cookie("cpass", password);
-        Cookie cr = new Cookie("crem", r);
-        if (r != null) {//co chon
-            ce.setMaxAge(60 * 60 * 24 * 30);
-            cp.setMaxAge(60 * 60 * 24 * 30);
-            cr.setMaxAge(60 * 60 * 24 * 30);
-        } else {
-            cp.setMaxAge(0);
-            cr.setMaxAge(0);
-        }
-        response.addCookie(ce);
-        response.addCookie(cp);
-        response.addCookie(cr);
-
-        AccountDAO dao = new AccountDAO();
-        account a = dao.getAccountByEmail(email);
-        HttpSession session = request.getSession();
-        session.setAttribute("role", 2);
-        if (email != null && !email.isEmpty() && password != null && !password.isEmpty()) {
-            if (a != null) {
-                if (a.getEmail() != null) {
-                    if (password.equals(a.getPassword())) {
-                        result = "";
-                        request.setAttribute("key", result);
-                        if (a.getRole().equalsIgnoreCase("Admin")) {
-                            session.setAttribute("role", 1);
-                        }
-                        session.setAttribute("account", a);
-                        response.sendRedirect("home");
-                    } else {
-                        result = "Invalid password. Please try again.";
-                        request.setAttribute("key", result);
-                        request.getRequestDispatcher("login.jsp").forward(request, response);
+        String link = request.getParameter("link");
+        episode ep = new episode(id, name, length, access, movieid, link,thumbnail);
+        switch (action) {
+            case "add":
+                List<episode> eps = daoep.getAllEpsByMovieID(movieid);
+                boolean isExist = false;
+                for (episode e : eps) {
+                    if (e.getChapterID() == id) {
+                        messError = "Không thể thêm vì tập phim này đã tồn tại!!";
+                        isExist = true;
+                        request.setAttribute("error", messError);
+                        request.getRequestDispatcher("filmDetail.jsp?id=" + movieid).forward(request, response);
                     }
                 }
-            } else {
-                result = "Invalid email. Please try again or Create a new account.";
-                request.setAttribute("key", result);
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
+                if (!isExist) {
+                    daoep.addEps(ep);
+                    response.sendRedirect("filmDetail.jsp?id=" + movieid);
+                }
+                break;
+
+            case "edit":
+                daoep.editEps(ep);
+                response.sendRedirect("filmDetail.jsp?id=" + movieid);
+                break;
         }
+
     }
 
     /**

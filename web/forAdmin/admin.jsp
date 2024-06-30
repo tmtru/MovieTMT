@@ -63,7 +63,7 @@
                 </ul>
                 <ul class="sidebar--bottom-items">
                     <li>
-                        <a href="../home.jsp">
+                        <a href="../home">
                             <span class="icon icon-8"><i class="ri-logout-box-r-line"></i></span>
                             <span class="sidebar--item">Exit</span>
                         </a>

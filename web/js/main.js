@@ -67,10 +67,8 @@ document.addEventListener("click", function (e) {
 let numberOfItem;
 let progressBar, lastBar;
 function numberOfItems(handle) {
-  numberOfItem = getComputedStyle(
-    handle.closest(".slide-movie")
-  ).getPropertyValue("--number-of-item");
-  return numberOfItem;
+    console.log(handle.closest(".slide-movie").querySelectorAll(".movie-item").length);
+  return handle.closest(".slide-movie").querySelectorAll(".movie-item").length;
 }
 function calculateProgressBar(handle) {
   const slider = handle.closest(".slide-movie").querySelector(".slider");

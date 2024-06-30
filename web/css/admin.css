@@ -7,6 +7,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Author     : Admin
 */
 
+
 .sidebar {
     position: fixed;
     top: 0;
@@ -538,10 +539,6 @@ tr .add-a{
     overflow:auto;
     
 }
-.edit-film{
-    color: red !important;
-    border-bottom: 1px solid red;
-}
 .table {
     overflow:auto !important;
     
@@ -549,3 +546,26 @@ tr .add-a{
 .breadcrumb-item.active {
     color: #999999;
 }
+
+.table{
+    --bs-table-color: #e6eaed;
+    --bs-table-bg: transparent;
+    --bs-table-accent-bg: rgba(255, 255, 255, 0.04);
+}
+.pagination {
+    --bs-pagination-padding-x: 0.75rem;
+    --bs-pagination-padding-y: 0.375rem;
+    --bs-pagination-font-size: 1rem;
+    --bs-pagination-color: #ffffff;
+    --bs-pagination-bg: rgba(0, 0, 0, 0.2);
+    --bs-pagination-hover-color: var(--bs-link-hover-color);
+    --bs-pagination-hover-bg: #626365;
+    --bs-pagination-hover-border-color: var(--bs-border-color);
+    --bs-pagination-focus-color: #154ea0;
+    --bs-pagination-focus-bg: var(--bs-secondary-bg);
+    --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    --bs-pagination-active-color: #fff;
+    --bs-pagination-active-bg: #0a296d;
+    --bs-pagination-active-border-color: #ffffff;
+}
+

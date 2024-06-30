@@ -4,22 +4,25 @@
  */
 package controller;
 
-import dal.AccountDAO;
+import dal.MovieDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import model.account;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import model.movie;
 
 /**
  *
  * @author Admin
  */
-public class login extends HttpServlet {
+public class addNewFilms extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +41,10 @@ public class login extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet login</title>");
+            out.println("<title>Servlet addNewFilms</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet login at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet addNewFilms at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -75,61 +78,51 @@ public class login extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
-        String result = "";
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String r = request.getParameter("rem");
-
-        //tạo 3 cookie: username, pass, role
-        Cookie ce = new Cookie("cemail", email);
-        Cookie cp = new Cookie("cpass", password);
-        Cookie cr = new Cookie("crem", r);
-        if (r != null) {//co chon
-            ce.setMaxAge(60 * 60 * 24 * 30);
-            cp.setMaxAge(60 * 60 * 24 * 30);
-            cr.setMaxAge(60 * 60 * 24 * 30);
-        } else {
-            cp.setMaxAge(0);
-            cr.setMaxAge(0);
+        String title = request.getParameter("title");
+        String releaseDate = request.getParameter("releaseDate");
+//        releaseDate=convertDateFormat(releaseDate);
+        String content = request.getParameter("content");
+        String posterLink = request.getParameter("posterLink");
+        String country = request.getParameter("country");
+        int eps = Integer.parseInt(request.getParameter("numberOfEps"));
+        String genre1 = request.getParameter("genre1");
+        String genre2 = request.getParameter("genre2");
+        String genre3 = request.getParameter("genre3");
+        String genre4 = request.getParameter("genre4");
+        ArrayList<String> genre=new ArrayList<>();
+        if (genre1 != null && !genre1.isEmpty()) {
+            genre.add(genre1);
         }
-        response.addCookie(ce);
-        response.addCookie(cp);
-        response.addCookie(cr);
-
-        AccountDAO dao = new AccountDAO();
-        account a = dao.getAccountByEmail(email);
-        HttpSession session = request.getSession();
-        session.setAttribute("role", 2);
-        if (email != null && !email.isEmpty() && password != null && !password.isEmpty()) {
-            if (a != null) {
-                if (a.getEmail() != null) {
-                    if (password.equals(a.getPassword())) {
-                        result = "";
-                        request.setAttribute("key", result);
-                        if (a.getRole().equalsIgnoreCase("Admin")) {
-                            session.setAttribute("role", 1);
-                        }
-                        session.setAttribute("account", a);
-                        response.sendRedirect("home");
-                    } else {
-                        result = "Invalid password. Please try again.";
-                        request.setAttribute("key", result);
-                        request.getRequestDispatcher("login.jsp").forward(request, response);
-                    }
-                }
-            } else {
-                result = "Invalid email. Please try again or Create a new account.";
-                request.setAttribute("key", result);
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
+        if (genre2 != null && !genre2.isEmpty()) {
+            genre.add(genre2);
         }
+        if (genre3 != null && !genre3.isEmpty()) {
+            genre.add(genre3);
+        }
+        if (genre4 != null && !genre4.isEmpty()) {
+            genre.add(genre4);
+        }
+        String actor = request.getParameter("actor");
+        String director = request.getParameter("director");
+        String mess = "";
+        int viewers = Integer.parseInt(request.getParameter("viewers"));
+        float rating = Float.parseFloat(request.getParameter("rating"));
+        movie m=new movie("",title, releaseDate, content, country, posterLink, actor, director,eps, viewers, rating, genre);
+        MovieDAO dao=new MovieDAO();
+        if (!dao.isDuplicatedTitle(title)) dao.addNewMovie(m);
+        request.setAttribute("messf", m);
+        response.sendRedirect("search");
+
     }
+
 
     /**
      * Returns a short description of the servlet.
      *
      * @return a String containing servlet description
      */
+
+
     @Override
     public String getServletInfo() {
         return "Short description";

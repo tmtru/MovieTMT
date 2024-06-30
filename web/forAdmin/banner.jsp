@@ -13,6 +13,7 @@
         <title>JSP Page</title>
         <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="../css/admin.css">
+        <link rel="stylesheet" href="../css/modelDelete.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
         <script src="https://kit.fontawesome.com/aab0c35bef.js" crossorigin="anonymous"></script>
@@ -27,7 +28,7 @@
                 List<banner> banners = dao.getAllBanner();
                 request.setAttribute("banners", banners);       
             %>
-            
+
 
             <div class="recent--patients mt-5">
                 <button type="button" class="btn btn-primary add mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -45,7 +46,7 @@
 
                             <form id="movieForm" action="banner" method="post">
                                 <div class="modal-body row g-3">
-                                    
+
                                     <div class="col-md-12">
                                         <label for="inputEmail4" class="form-label">Nhập ID phim tương ứng với ảnh</label>
                                         <input id="title" type="text" class="form-control" name="id" value="" required>
@@ -61,7 +62,7 @@
                                             <option value="1">Ảnh Quảng Cáo Banner Dài</option>
                                         </select>
                                     </div>
-                                    
+
                                     <div class="col-12">
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="gridCheck" required>
@@ -87,23 +88,49 @@
                     <div class="" style="color: white;">
                         <div class="table table-movies" style="max-width: 100vw">
                             <table>
-                                <thead>
+                                <thead style=" background-color: rgb(146 150 255 / 13%); ">
                                     <tr>
-                                        <th style="max-width: 100px">Đường dẫn</th>
                                         <th>Ảnh</th>
+                                        <th style="max-width: 100px">Đường dẫn</th>
                                         <th>Phim</th>
                                     </tr>
                                 </thead>
                                 <tbody >
                                     <c:forEach items="${banners}" var="b">
                                         <c:if test="${b.role=='0'}">
-                                        <tr>
-                                            <td style="word-break: break-all; overflow:hidden;">${b.linkImg}</td>
-                                            <td><image src="${b.linkImg}" class="img-fluid" style="max-width: 20vw"/></td>
-                                            <td style="width: 150px; color: blue;margin-right: 10px;"><a style="color: blue !important;" href="filmDetail.jsp?id=${b.movieID}&pre=banner">Chi tiết phim | </a><br/>
-                                            <a style="color: red !important;" href="banner?action=delete&id=${b.bannerID}">Xóa</a>
-                                            </td>
-                                        </tr>
+                                            <tr>
+                                                <td><image src="${b.linkImg}" class="img-fluid" style="max-width: 25vw"/></td>
+                                                <td style="word-break: break-all; overflow:hidden;font-size:small ;">${b.linkImg}</td>
+                                                
+                                                <td style="width: 150px; color: blue;margin-right: 10px;">
+                                                    <a style="color: #bcbcff !important;" href="filmDetail.jsp?id=${b.movieID}&pre=banner">| Chi tiết phim </a><br/><br/>
+                                                    <!-- Button HTML (to Trigger Modal) -->
+                                                    <a href="#myModal${b.bannerID}" style="color: red !important;" data-bs-toggle="modal" data-bs-target="#myModal${b.bannerID}">| Xóa Ảnh</a>
+                                                    <!-- Modal HTML -->
+                                                    <div id="myModal${b.bannerID}" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-confirm">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header flex-column">
+                                                                    <div class="icon-box">
+                                                                        <i class="material-icons"><i class="fa-solid fa-circle-xmark"></i></i>
+                                                                    </div>						
+                                                                    <h4 class="modal-title w-100">Are you sure?</h4>	
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p>Bạn có chắc chắn bạn muốn xóa ảnh </p>
+                                                                    <img src="${b.linkImg}" class="img-fluid"/>
+                                                                </div>
+                                                                <div class="modal-footer justify-content-center">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                                    <button type="button" class="btn btn-danger">
+                                                                        <a href="banner?action=delete&id=${b.bannerID}" class="edit-film" style="color: white !important;">Xóa Ảnh</a>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         </c:if>
                                     </c:forEach>
                                 </tbody>
@@ -118,28 +145,55 @@
                     <div class="" style="color: white;">
                         <div class="table table-movies" style="max-width: 100vw">
                             <table>
-                                <thead>
+                                <thead style=" background-color: rgb(146 150 255 / 13%); ">
                                     <tr>
-                                        <th style="max-width: 100px">Đường dẫn</th>
+                                        
                                         <th>Ảnh</th>
+                                        <th style="max-width: 100px">Đường dẫn</th>
                                         <th>Phim</th>
                                     </tr>
                                 </thead>
-                                <tbody >
+                                <tbody>
                                     <c:forEach items="${banners}" var="b">
                                         <c:if test="${b.role=='1'}">
-                                        <tr>
-                                            <td style="max-width: 70vw; word-break: break-all; overflow:hidden;">${b.linkImg}</td>
-                                            <td><image src="${b.linkImg}" class="img-fluid"/></td>
-                                            <td style="width: 150px; color: blue;margin-right: 10px;"><a style="color: blue !important;" href="filmDetail.jsp?id=${b.movieID}&pre=banner">Chi tiết phim | </a><br/>
-                                           
-                                            <a style="color: red !important;" href="banner?action=delete&id=${b.bannerID}">Xóa</a>
-                                            </td>
-                                        </tr>
+                                            <tr>
+                                                <td><img src="${b.linkImg}" class="img-fluid"/></td>
+                                                <td style="max-width: 70vw; word-break: break-all; overflow:hidden;font-size:small ;">${b.linkImg}</td>
+                                                
+                                                <td style="width: 150px; color: blue;margin-right: 10px;">
+                                                    <a style="color: #bcbcff !important;" href="filmDetail.jsp?id=${b.movieID}&pre=banner">| Chi tiết phim </a><br/><br/>
+                                                    <!-- Button HTML (to Trigger Modal) -->
+                                                    <a href="#myModal${b.bannerID}" style="color: red !important;" data-bs-toggle="modal" data-bs-target="#myModal${b.bannerID}">| Xóa Ảnh</a>
+                                                    <!-- Modal HTML -->
+                                                    <div id="myModal${b.bannerID}" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-confirm">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header flex-column">
+                                                                    <div class="icon-box">
+                                                                        <i class="material-icons"><i class="fa-solid fa-circle-xmark"></i></i>
+                                                                    </div>						
+                                                                    <h4 class="modal-title w-100">Are you sure?</h4>	
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p>Bạn có chắc chắn bạn muốn xóa ảnh </p>
+                                                                    <img src="${b.linkImg}" class="img-fluid"/>
+                                                                </div>
+                                                                <div class="modal-footer justify-content-center">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                                    <button type="button" class="btn btn-danger">
+                                                                        <a href="banner?action=delete&id=${b.bannerID}" class="edit-film" style="color: white !important;">Xóa Ảnh</a>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         </c:if>
                                     </c:forEach>
                                 </tbody>
                             </table>
+
                         </div>
                     </div>
                 </div>
