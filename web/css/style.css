@@ -352,12 +352,36 @@ li .iq-sub-dropdown .iq-sub-card {
 .navbar-right .nav-icon i{
     font-size: 20px;
 }
+.payment{
+    border: 1px solid #ffcc00 !important;
+    padding: 5px 6px;
+    border-radius: 15px;
+    background-color: #ff9900;
+}
 .navbar-right .search-box:hover .search-input {
     width: 200px;
     padding-left: 10px;
 
 }
-
+.navbar-right .account{
+    position: relative;
+    
+}
+.navbar-right .account .payment{
+    position: absolute; 
+    top:0;
+    right:0;
+    width:20px;
+    height: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    
+}
+.navbar-right .account .payment i{
+    font-size: 12px;
+    
+}
 .navbar-right .search-box:hover .device-search {
     background: rgb(252, 251, 253);
     color: #405cb9;

@@ -33,6 +33,7 @@
                 request.setAttribute("currentFilm", currentFilm);
                 
             %>
+            
 
             <div class="recent--patients">
 
@@ -102,7 +103,7 @@
                                     <div class="col-md-12">
                                         <label for="inputState" class="form-label">Genre</label>
                                         <select name="genre1" id="inputState" class="form-select mb-1">
-                                            <option value="${currentFilm.genre.get(0)}" selected>${currentFilm.genre.get(0)}</option>
+                                            <c:if test="${currentFilm.genre.size() > 0}"><option value="${currentFilm.genre.get(0)}" selected>${currentFilm.genre.get(0)}</option></c:if>
                                             <option></option>
                                             <c:forEach items="${genres}" var="g">
                                                 <option value="${g.genreName}">${g.genreName}</option>

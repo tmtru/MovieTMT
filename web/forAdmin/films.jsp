@@ -48,13 +48,6 @@
 
 
                 </div>
-                <select name="date" id="date" class="dropdown mt-3 g-3 ms-3" style="max-height: 40px;">
-                    <option value="today">Today</option>
-                    <option value="lastweek">Last Week</option>
-                    <option value="lastmonth">Last Month</option>
-                    <option value="lastyear">Last Year</option>
-                    <option value="alltime">All Time</option>
-                </select>
             </div>
             <div class="recent--patients">
                 <div class="title">

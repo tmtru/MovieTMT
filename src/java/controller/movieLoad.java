@@ -77,7 +77,10 @@ public class movieLoad extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
+         AccountDAO accountDAO = new AccountDAO();
         HttpSession session = request.getSession();
+        account a=(account) session.getAttribute("account");
+        int userID=accountDAO.getIDbyEmail(a.getEmail());
         MovieDAO daom = new MovieDAO();
         movie currentMovie;
         String id = request.getParameter("movieid");
@@ -96,9 +99,10 @@ public class movieLoad extends HttpServlet {
         List<episode> eps = daoep.getAllEpsByMovieID(Integer.parseInt(m.getId()));
 
         session.setAttribute("watchingeps", eps);
+        
         //load comment
         HistoryDAO historyDAO = new HistoryDAO();
-        AccountDAO accountDAO = new AccountDAO();
+       
         List<history> historyList = null;
         Map<history, account> historyAccountMap = new LinkedHashMap<>();
 
@@ -115,6 +119,16 @@ public class movieLoad extends HttpServlet {
             session.setAttribute("historyAccountMap", historyAccountMap);
         } catch (SQLException ex) {
             System.out.println(ex);
+        }
+        //save history view of user
+        boolean isViewed=historyDAO.userViewedMovie(userID, Integer.parseInt(id), Integer.parseInt(ep));
+        if (!isViewed) {
+            daom.increaseView(1,Integer.parseInt(id));
+            try {
+                historyDAO.addHistory(userID,Integer.parseInt(id) , Integer.parseInt(ep), null);
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
         }
 
         String title = normalizeVietnamese(m.getTitle());

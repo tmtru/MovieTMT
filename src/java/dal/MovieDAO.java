@@ -105,8 +105,8 @@ public class MovieDAO extends DBContext {
     public movie getMovieById(String id) {
         movie m = null;
         String sql = "Select Movie.*, Genre.GenreName FROM Movie\n"
-                + "INNER JOIN Movie_Genre ON Movie_Genre.MovieID=Movie.MovieID\n"
-                + "INNER JOIN Genre ON Movie_Genre.GenreID=Genre.GenreID\n"
+                + "LEFT JOIN Movie_Genre ON Movie_Genre.MovieID=Movie.MovieID\n"
+                + "LEFT JOIN Genre ON Movie_Genre.GenreID=Genre.GenreID\n"
                 + "Where Movie.MovieID=?;";
 
         try {
@@ -128,12 +128,45 @@ public class MovieDAO extends DBContext {
                     float rating = rs.getFloat("rating");
                     m = new movie(id, title, releaseTime, content, country, posterLink, actor, director, movieLength, viewers, rating, genre);
                 }
-                genre.add(rs.getNString("GenreName"));
+                if (rs.getNString("GenreName")!=null) genre.add(rs.getNString("GenreName"));
             }
         } catch (SQLException e) {
             System.out.println(e);
         }
         return m;
+    }
+
+
+    public ArrayList<movie> getAllMoviesByCountry(String country) {
+        ArrayList<movie> movies = new ArrayList<>();
+        String sql = "SELECT * FROM Movie WHERE Country = ?";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setNString(1, country);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                String id = rs.getString("MovieID");
+                String title = rs.getNString("Title");
+                String releaseTime = rs.getString("ReleaseYear");
+                String content = rs.getNString("Content");
+                int movieLength = rs.getInt("MovieLength");
+                String posterLink = rs.getString("Poster_link");
+                int viewers = rs.getInt("Viewers");
+                String actor = rs.getNString("Actor");
+                String director = rs.getNString("Director");
+                float rating = rs.getFloat("Rating");
+
+                ArrayList<String> genres = getGenresByMovieId(id);
+
+                movie m = new movie(id, title, releaseTime, content, country, posterLink, actor, director, movieLength, viewers, rating, genres);
+                movies.add(m);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return movies;
     }
 
     public movie addNewMovie(movie m) {
@@ -397,18 +430,39 @@ public class MovieDAO extends DBContext {
         }
         return movies;
     }
-    
+    public void increaseView(int i, int movieID) {
+        String sql = "UPDATE Movie SET Viewers = Viewers + ? WHERE MovieID = ?";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, i);
+            pstmt.setInt(2, movieID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+     public int allViews() {
+        String sql = "SELECT SUM(Viewers) AS totalViews FROM Movie";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("totalViews");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0; // Trả về 0 nếu có lỗi
+    }
 
     public static void main(String[] args) {
         // Tạo kết nối tới database
-        MovieDAO movieDAO = new MovieDAO();
-        movie movies = movieDAO.getMovieById("2".toString());
+        MovieDAO dao=new MovieDAO();
+                movie currentFilm = dao.getMovieById("23");
 
         // Xử lý các bộ phim lấy được
-        
-            System.out.println(movies);
-        
-        
+        System.out.println(currentFilm);
+
     }
 
 }

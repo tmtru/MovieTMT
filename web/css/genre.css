@@ -58,7 +58,7 @@ body {
     color: #ffffff;
     display: grid;
     grid-template-columns: 2fr 8fr;
-    gap: 2rem;
+    gap: 3rem;
     margin: 150px 1rem 0px 1rem;
 }
 
@@ -70,24 +70,25 @@ body {
     border-radius: 1rem;
     padding: 2rem 2.5rem;
     min-width: 300px;
-    max-width: 450px;
+    max-width: 550px;
+    width: 100%;
 }
 
 .sidebar-groups {
     margin-bottom: 1rem;
 }
-.search-box {
+.sidebar-groups .search-box {
     opacity: 1;
     visibility: visible;
     transform: translate(0, 0);
 }
-.search-box {
+.sidebar-groups .search-box {
     position: relative;
-    margin-bottom: 100px;
+    margin-bottom: 10px;
     padding: 0px;
 }
 
-.device-search {
+.sidebar-groups .device-search {
     position: relative;
     color: white;
     width: 40px;
@@ -103,20 +104,20 @@ body {
 .navbar-right .nav-icon i{
     font-size: 20px;
 }
-.search-box:hover .search-input {
-    width: 90%;
+.sidebar-groups .search-box:hover .search-input {
+    width: 93%;
     padding-left: 10px;
     transition: 0.5s ease-in-out;
 
 }
 
-.search-box:hover .device-search {
+.sidebar-groups .search-box:hover .device-search {
     background: rgb(252, 251, 253);
     color: #405cb9;
     border: none;
 }
 
-.search-input {
+.sidebar-groups .search-input {
     border: none;
     background: white;
     padding: 0px;
@@ -132,6 +133,14 @@ body {
     border-radius: 20px 0px 0px 20px;
     z-index: 1;
 }
+.reverse i{
+    display:none;
+}
+.reverse a.active i{
+    display: block !important;
+}
+
+
 .accordion {
     --bs-accordion-bg: rgb(235 235 235 / 0%) !important;
 }
@@ -141,13 +150,37 @@ body {
     padding-bottom: 10px;
     margin-bottom: 20px;
 }
+.movie-menu .watch-button {
+    position: absolute;
+    bottom: 25% !important;
+    left: 10%;
+}
 .genre-item {
     border: 0.5px solid white;
     border-radius: 25px;
     text-align: center;
-    padding: 5px 7px;
+    padding: 5px 8px;
     margin-right: 10px;
     white-space: nowrap;
+    position: relative;
+}
+.genre-item.active{
+    background-color: #172687 !important;
+    border: 0.5px solid #172687;
+}
+.genre-item i{
+    display: none;
+    
+}
+.genre-item.active i{
+    display:block;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: -5px;
+    font-size: large;
+    right: 0;
+    
 }
 input {
     margin-bottom: .6rem;
@@ -191,77 +224,17 @@ img.d-block.w-100 {
 
 }
 
-.upcoming-title {
-    position: absolute;
-    top: 1rem;
-    left: 2rem;
-    color: #ffffff;
-    background-color: #09155c;
-    padding: 5px 10px;
-    border-radius: 2rem;
-    border: 1px solid #d1d1d1;
-    font-weight: 1rem;
-    opacity: 0.7;
-}
-
-.buttons {
-    position: absolute;
-    bottom: 10%;
-    left: 5%;
-}
-
-.xbtn {
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 1rem;
-}
-
-.xbtn-alt {
-    background-color: rgba(5, 5, 5, 0.8);
-    color: #384ecd;
-    border: 1px solid #1639ad;
-    margin-left: 1rem;
-}
-
-a.xbtn-alt:hover {
-    color: #5d69c5;
-    background-color: rgba(62, 62, 161, 0.8);
-}
-
-/* current movies */
-.movies-container {
-    padding-bottom: 2rem;
-    justify-content: center;
-    align-items: center;
-}
-
-div.top-movie.row {
-    align-items: center;
-}
-
-.current-movies.row {
-    margin-bottom: 1rem;
-}
-
-.current-movies {
-
-}
-
-.movie-no-scroll div {
-    flex-wrap: wrap;
-}
-
 .movie-no-scroll.movie-menu {
-    margin-top: 25px;
+    margin-top: 5px;
 }
 
 .movie-no-scroll.movie-menu .movie-item img {
-    aspect-ratio: 16/9;
+    aspect-ratio: 18/25;
     margin: 5px 0;
 }
 
 .movie-no-scroll.movie-menu .movie-item:hover img {
-    opacity: 0.6;
+    opacity: 0.35;
     transform: scale(1) !important;
     border: none !important;
     /* border-left: 5px solid rgb(47, 104, 180);
@@ -277,7 +250,7 @@ div.top-movie.row {
 }
 
 .movie-no-scroll.movie-menu .movie-item:hover .title {
-    opacity: 1;
+    opacity: 0.5;
 
 
 }
@@ -302,29 +275,78 @@ div.top-movie.row {
     color: #fff;
     margin-bottom: .2rem;
 }
+.reverse a.hide{
+    display: none;
+}
+.reverse a.active{
+    display: block;
+}
+    .movie-item .iq-card{
+        width: 200px !important;
+    }
 
 @media only screen and (max-width: 992px) {
     .top-movie .right-bar-movie{
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        
+
     }
-        .top-movie .right-bar-movie div.current-movies.row:first-child{
-            margin-right: 0 !important;
-        }
-        .top-movie .right-bar-movie div.current-movies.row:last-child {
-            margin-left: 0 !important;
-        }
+    .top-movie .right-bar-movie div.current-movies.row:first-child{
+        margin-right: 0 !important;
+    }
+    .top-movie .right-bar-movie div.current-movies.row:last-child {
+        margin-left: 0 !important;
+    }
+    .movie-item .iq-card{
+        width: 190px !important;
+    }
 }
 @media (max-width:767px) {
     .main-container {
         display: flex;
         flex-wrap: wrap;
     }
+    .movie-item .iq-card{
+        width: 180px !important;
+    }
 }
 
 @media (max-width:424px) {
-    
+    .movie-item .iq-card{
+        width: 170px;
+    }
 
 
+}
+.btn-secondary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: transparent !important;
+    --bs-btn-border-color: #6c757d;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #5c636a40;
+    --bs-btn-hover-border-color: #565e64;
+    --bs-btn-focus-shadow-rgb: 130, 138, 145;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: transparent !important;
+    --bs-btn-active-border-color: #51585e;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #6c757d;
+    --bs-btn-disabled-border-color: #6c757d;
+}
+.pagination {
+    --bs-pagination-padding-x: 0.75rem;
+    --bs-pagination-padding-y: 0.375rem;
+    --bs-pagination-font-size: 1rem;
+    --bs-pagination-color: #ffffff !important;
+    --bs-pagination-bg: rgba(0, 0, 0, 0.2) !important;
+    --bs-pagination-hover-color: var(--bs-link-hover-color);
+    --bs-pagination-hover-bg: #626365 !important;
+    --bs-pagination-hover-border-color: var(--bs-border-color);
+    --bs-pagination-focus-color: #154ea0 !important;
+    --bs-pagination-focus-bg: var(--bs-secondary-bg);
+    --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    --bs-pagination-active-color: #fff !important;
+    --bs-pagination-active-bg: #0a296d;
+    --bs-pagination-active-border-color: #ffffff;
 }

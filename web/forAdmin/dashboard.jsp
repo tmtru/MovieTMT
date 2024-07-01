@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="java.util.List, java.util.ArrayList, model.movie,model.genre,model.episode,model.account, dal.MovieDAO, dal.GenreDAO, dal.EpisodeDAO,dal.AccountDAO"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,20 +24,27 @@
             <div class="overview">
                 <div class="title">
                     <h2 class="section--title">Overview</h2>
-                    <select name="date" id="date" class="dropdown">
-                        <option value="today">Today</option>
-                        <option value="lastweek">Last Week</option>
-                        <option value="lastmonth">Last Month</option>
-                        <option value="lastyear">Last Year</option>
-                        <option value="alltime">All Time</option>
-                    </select>
                 </div>
+                <%  MovieDAO daom = new MovieDAO();
+                    int numberOfFilms=daom.numberOfFilms();
+                    int allViews=daom.allViews();
+                    request.setAttribute("nbfilms", numberOfFilms);
+                    request.setAttribute("allviews", allViews);
+
+                %>
+                <% 
+                AccountDAO daoa=new AccountDAO();
+                List<account> accounts = daoa.getAllAccounts();
+                request.setAttribute("accounts", accounts);
+                
+                %>
                 <div class="cards">
                     <div class="card card-1">
                         <div class="card--data">
                             <div class="card--content">
                                 <h5 class="card--title">Tổng số phim</h5>
-                                <h1>152</h1>
+
+                                <h1>${nbfilms}</h1>
                             </div>
                             <i class="fa-solid fa-film card--icon--lg"></i>
                         </div>
@@ -44,7 +53,7 @@
                         <div class="card--data">
                             <div class="card--content">
                                 <h5 class="card--title">Người dùng</h5>
-                                <h1>1145</h1>
+                                <h1>${accounts.size()}</h1>
                             </div>
                             <i class="fa-solid fa-users card--icon--lg"></i>
                         </div>
@@ -53,15 +62,10 @@
                         <div class="card--data">
                             <div class="card--content">
                                 <h5 class="card--title">Lượt truy cập</h5>
-                                <h1>102</h1>
+                                <h1>${allviews}</h1>
                             </div>
 
                             <i class="fa-solid fa-eye card--icon--lg"></i>
-                        </div>
-                        <div class="card--stats">
-                            <span><i class="ri-bar-chart-fill card--icon stat--icon"></i>27%</span>
-                            <span><i class="ri-arrow-up-s-fill card--icon up--arrow"></i>31</span>
-                            <span><i class="ri-arrow-down-s-fill card--icon down--arrow"></i>23</span>
                         </div>
                     </div>
                     <div class="card card-4">
@@ -123,7 +127,7 @@
         <%
     int[] message = {1, 2, 3,4,5,6,7};
 
-%>
+        %>
     </body>
     <script>
         const ctx = document.getElementById('myChart');

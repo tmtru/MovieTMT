@@ -83,7 +83,7 @@ public class AccountDAO extends DBContext {
             st.setString(2, lastname);
             st.setString(3, email);
             st.setString(4, password);
-            account a = new account(lastname+" "+firstname, email, null, null, null, "User", "Normal", password, "./assets/img/avatar.png");
+            account a = new account(lastname + " " + firstname, email, null, null, null, "User", "Normal", password, "./assets/img/avatar.png");
             System.out.println(a);
             st.executeUpdate();
             return a;
@@ -174,7 +174,7 @@ public class AccountDAO extends DBContext {
             if (rowsUpdated > 0) {
                 // Tạo đối tượng account mới với các thông tin đã cập nhật
                 account updatedAccount = new account();
-                updatedAccount.setName(lastName+" "+firstName); 
+                updatedAccount.setName(lastName + " " + firstName);
                 updatedAccount.setEmail(email);
                 updatedAccount.setGender(gender);
                 updatedAccount.setPhoneNumber(phoneNumber);
@@ -191,8 +191,46 @@ public class AccountDAO extends DBContext {
         return null;
     }
 
+    public List<account> getAllVipUsers() {
+        List<account> vipUsers = new ArrayList<>();
+        String sql = "SELECT * FROM Users WHERE Access_Right = 'Vip'";
+
+        try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
+
+            while (rs.next()) {
+                account user = new account();
+                user.setName(rs.getString("LastName") + " " + rs.getString("FirstName"));
+                user.setEmail(rs.getString("Email"));
+                user.setGender(rs.getString("Gender"));
+                user.setPhoneNumber(rs.getString("PhoneNumber"));
+                user.setCardNumber(rs.getString("Card_Number"));
+                user.setRole(rs.getString("Role"));
+                user.setAccessRight(rs.getString("Access_Right"));
+                user.setPassword(rs.getString("Password"));
+                user.setAvatar(rs.getString("Avatar"));
+                vipUsers.add(user);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return vipUsers;
+    }
+
+    public boolean updateVipUser(int userId) {
+        String sql = "UPDATE Users SET Access_Right = 'Vip' WHERE UserID = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, userId);
+            int rowsUpdated = st.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         AccountDAO dao = new AccountDAO();
-        System.out.println(dao.addAccount("T", "T","test@gmail.com", "12"));
+        System.out.println(dao.getAllVipUsers());
     }
 }
