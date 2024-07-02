@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="java.util.List, java.util.ArrayList, model.movie,model.genre,model.episode,model.account, dal.MovieDAO, dal.GenreDAO, dal.EpisodeDAO,dal.AccountDAO"%>
+<%@page import="java.util.List,java.util.Map,java.util.HashMap , java.util.ArrayList, model.movie,model.genre,model.episode,model.account,model.history, dal.MovieDAO, dal.GenreDAO, dal.EpisodeDAO,dal.AccountDAO,java.util.Map.Entry,dal.HistoryDAO"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,6 +14,7 @@
         <title>JSP Page</title>
         <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="../css/admin.css">
+        <link rel="stylesheet" href="../css/rankboard.css">
         <script src="../js/main.js"></script>
         <script src="../js/admin.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -35,9 +36,12 @@
                 <% 
                 AccountDAO daoa=new AccountDAO();
                 List<account> accounts = daoa.getAllAccounts();
+                List<account> vipaccounts = daoa.getAllVipUsers();
                 request.setAttribute("accounts", accounts);
+                request.setAttribute("vip",vipaccounts);
                 
                 %>
+                <c:set var="totalvipmoney" value="${63000*vip.size()}"/>
                 <div class="cards">
                     <div class="card card-1">
                         <div class="card--data">
@@ -72,57 +76,57 @@
                         <div class="card--data">
                             <div class="card--content">
                                 <h5 class="card--title">Lợi nhuận</h5>
-                                <h1>15</h1>
+                                <h1>${totalvipmoney} VND</h1>
                             </div>
                             <i class="fa-solid fa-coins card--icon--lg"></i>
                         </div>
                         <div class="card--stats">
-                            <span><i class="ri-bar-chart-fill card--icon stat--icon"></i>8%</span>
-                            <span><i class="ri-arrow-up-s-fill card--icon up--arrow"></i>11</span>
-                            <span><i class="ri-arrow-down-s-fill card--icon down--arrow"></i>2</span>
+                            <span><i class="ri-bar-chart-fill card--icon stat--icon"></i>Với ${vip.size()} người dùng đăng kí Vip</span>
+
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="chart">
-                <canvas id="myChart"></canvas>
-            </div>
+            <%
+            HistoryDAO historyDAO = new HistoryDAO();
+            MovieDAO movieDAO = new MovieDAO();
+            Map<Integer, Integer> weeklyViews = historyDAO.getWeeklyViews();
+            List<Entry<Integer, Integer>> rankFilms = new ArrayList<>(weeklyViews.entrySet());
+            request.setAttribute("rankFilms", rankFilms);
+            request.setAttribute("movieDAO",movieDAO);
+            %>
 
-            <div class="recent--patients">
-                <div class="title">
-                    <h2 class="section--title">Hoạt động gần đây</h2>
-                    <a href="#" class="add">Xem chi tiết</a>
+            <div class="main">
+                <div id="header-rank">
+                    <h3 style="color: #000000b8">Top Lượt Xem Trong Tuần</h3>
                 </div>
-                <div class="table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Tên</th>
-                                <th>Mục tiêu</th>
-                                <th>Thời gian</th>
-                                <th>Ghi chú</th>
-                            </tr>
-                        </thead>
+                <div id="leaderboard">
+                    <div class="ribbon"></div>
+                    <table class="table-rank">
                         <tbody>
-                            <tr>
-                                <td class="delete">DELETE</td>
-                                <td>Phim: ???</td>
-                                <td>30/07/2022</td>
-                                <td>None</td>
-
-                            </tr>
-                            <tr>
-                                <td class="add-a">ADD</td>
-                                <td>Phim: ???</td>
-                                <td>31/07/2022</td>
-                                <td>None</td>
-
-                            </tr>
-
+                            <c:forEach var="rankEntry" items="${rankFilms}" varStatus="status">
+                                <tr>
+                                    
+                                    <c:choose>
+                                        <c:when test="${status.index == 0}">
+                                            <td class="number" style="color: white; font-size: 18px;">${status.index + 1}</td> <!-- Use status.index to get current index -->
+                                    <td class="name" style="color: white; font-size: 18px;">${movieDAO.getMovieTitleByID(rankEntry.key)}</td>
+                                    <td class="points" style="color:#cccccc; font-size: 18px;">${rankEntry.value} Views<img class="gold-medal" src="https://github.com/malunaridev/Challenges-iCodeThis/blob/master/4-leaderboard/assets/gold-medal.png?raw=true" alt="gold medal"/></td>
+                                            </c:when>
+                                            <c:otherwise>
+                                            <td class="number">${status.index + 1}</td> <!-- Use status.index to get current index -->
+                                    <td class="name" style="color: #000000b8; font-size: 18px;">${movieDAO.getMovieTitleByID(rankEntry.key)}</td>
+                                            <td class="points">${rankEntry.value} Views</td>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </tr>
+                            </c:forEach>
                         </tbody>
                     </table>
                 </div>
             </div>
+
+
         </div>
         <%
     int[] message = {1, 2, 3,4,5,6,7};
@@ -133,7 +137,7 @@
         const ctx = document.getElementById('myChart');
 
         new Chart(ctx, {
-            type: 'bar',
+            type: 'line',
             data: {
                 labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
                 datasets: [{

@@ -87,12 +87,8 @@ public class historyLoad extends HttpServlet {
         account user=(account) session.getAttribute("account");
         int userid=daoa.getIDbyEmail(user.getEmail());
         
-        try {
-            daoh.addHistory(userid, movieid, 0, comment);
-            response.sendRedirect("movieload");
-        } catch (SQLException ex) {
-            Logger.getLogger(historyLoad.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        daoh.addHistory(userid, movieid, 0, comment);
+        response.sendRedirect("movieload");
     }
 
     /** 

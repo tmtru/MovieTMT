@@ -13,6 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 import model.history;
 import java.sql.Timestamp;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
+import java.util.HashMap;
+import java.util.Map;
+import java.sql.Date;
+import java.util.LinkedHashMap;
 
 /**
  *
@@ -21,17 +28,19 @@ import java.sql.Timestamp;
 public class HistoryDAO extends DBContext {
 
     // Thêm lịch sử xem phim
-    public void addHistory(int userID, int movieID, int chapterID, String comment) throws SQLException {
+    public boolean addHistory(int userID, int movieID, int chapterID, String comment) {
         String sql = "INSERT INTO History (Time, Watched_at, UserID, MovieID, ChapterID, Comment) VALUES (GETDATE(), GETDATE(), ?, ?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, userID);
             ps.setInt(2, movieID);
             ps.setInt(3, chapterID);
             ps.setString(4, comment);
-            ps.executeUpdate();
+            int rowsInserted = ps.executeUpdate();
+            return rowsInserted > 0;
         } catch (SQLException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
+        return false;
     }
 
     // Lấy lịch sử xem phim của một người dùng
@@ -111,7 +120,7 @@ public class HistoryDAO extends DBContext {
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, userID);
             ps.setInt(2, movieID);
-            ps.setInt(2, chapterID);
+            ps.setInt(3, chapterID);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next() && rs.getInt("count") > 0) {
                     return true; // Người dùng đã xem bộ phim tập này
@@ -123,13 +132,39 @@ public class HistoryDAO extends DBContext {
         return false; // Người dùng chưa xem bộ phim tập này
     }
 
-    public static void main(String[] args) throws SQLException {
-        // Tạo kết nối tới database
-        HistoryDAO DAO = new HistoryDAO();
-        List<history> hs = DAO.getHistoryCommentByMovieID(2);
+    public Map<Integer, Integer> getWeeklyViews() {
+        Map<Integer, Integer> weeklyViews = new LinkedHashMap<>(); // Sử dụng LinkedHashMap để duy trì thứ tự
+        LocalDate today = LocalDate.now();
+        LocalDate startOfWeek = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
 
-        // Xử lý các bộ phim lấy được
-        System.out.println(hs);
+        String sql = "SELECT MovieID, COUNT(*) AS ViewCount "
+                + "FROM History "
+                + "WHERE Time >= ? AND Comment IS NULL "
+                + "GROUP BY MovieID "
+                + "ORDER BY ViewCount DESC"; // Sắp xếp giảm dần theo ViewCount
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setDate(1, Date.valueOf(startOfWeek));
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                int movieID = rs.getInt("MovieID");
+                int viewCount = rs.getInt("ViewCount");
+                weeklyViews.put(movieID, viewCount);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return weeklyViews;
+    }
+
+    public static void main(String[] args) throws SQLException {
+        HistoryDAO dao = new HistoryDAO();
+        Map<Integer, Integer> weeklyViews = dao.getWeeklyViews();
+
+        for (Map.Entry<Integer, Integer> entry : weeklyViews.entrySet()) {
+            System.out.println("Movie ID: " + entry.getKey() + " - Views: " + entry.getValue());
+        }
 
     }
 }

@@ -128,14 +128,15 @@ public class MovieDAO extends DBContext {
                     float rating = rs.getFloat("rating");
                     m = new movie(id, title, releaseTime, content, country, posterLink, actor, director, movieLength, viewers, rating, genre);
                 }
-                if (rs.getNString("GenreName")!=null) genre.add(rs.getNString("GenreName"));
+                if (rs.getNString("GenreName") != null) {
+                    genre.add(rs.getNString("GenreName"));
+                }
             }
         } catch (SQLException e) {
             System.out.println(e);
         }
         return m;
     }
-
 
     public ArrayList<movie> getAllMoviesByCountry(String country) {
         ArrayList<movie> movies = new ArrayList<>();
@@ -430,6 +431,7 @@ public class MovieDAO extends DBContext {
         }
         return movies;
     }
+
     public void increaseView(int i, int movieID) {
         String sql = "UPDATE Movie SET Viewers = Viewers + ? WHERE MovieID = ?";
         try {
@@ -441,7 +443,8 @@ public class MovieDAO extends DBContext {
             e.printStackTrace();
         }
     }
-     public int allViews() {
+
+    public int allViews() {
         String sql = "SELECT SUM(Viewers) AS totalViews FROM Movie";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             try (ResultSet rs = ps.executeQuery()) {
@@ -455,10 +458,28 @@ public class MovieDAO extends DBContext {
         return 0; // Trả về 0 nếu có lỗi
     }
 
+    public String getMovieTitleByID(int movieID) {
+        String title = "";
+        String sql = "SELECT Title FROM Movie WHERE MovieID = ?";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, movieID);
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                title = rs.getString("Title");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return title;
+    }
+
     public static void main(String[] args) {
         // Tạo kết nối tới database
-        MovieDAO dao=new MovieDAO();
-                movie currentFilm = dao.getMovieById("23");
+        MovieDAO dao = new MovieDAO();
+        String currentFilm = dao.getMovieTitleByID(1);
 
         // Xử lý các bộ phim lấy được
         System.out.println(currentFilm);

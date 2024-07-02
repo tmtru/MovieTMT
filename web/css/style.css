@@ -284,7 +284,7 @@ li .iq-sub-dropdown .iq-sub-card {
 .navbar-right .iq-sub-dropdown {
     visibility: hidden;
     position: absolute;
-    top: 250%;
+    top: 140%;
     right: 0px;
     background: rgba(11, 11, 66, 0.8);
     transform: translate(0, -30px);
@@ -309,7 +309,7 @@ li .iq-sub-dropdown .iq-sub-card {
 .navbar-right .iq-user-dropdown {
     width: 200px;
     position: absolute;
-    top: 110%;
+    top: 100%;
     right: 15px;
     background: rgba(31, 31, 121, 0.8);
     transform: translate(0, -30px);
@@ -510,12 +510,12 @@ li .iq-sub-dropdown .iq-sub-card {
     }
 
     .mobile-more-menu .notify {
-        margin-top: 25px;
+        margin-top: 15px;
         width: 250px;
     }
 
     .mobile-more-menu .notify .iq-sub-dropdown {
-        margin-top: 10px;
+        margin-top: 8px;
         border: 1px solid rgb(77, 113, 211);
         border-radius: 5px;
     }

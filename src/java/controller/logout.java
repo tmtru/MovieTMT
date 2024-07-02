@@ -60,7 +60,7 @@ public class logout extends HttpServlet {
         HttpSession session= request.getSession();
         session.setAttribute("account", null);
         session.setAttribute("role", 2);
-        response.sendRedirect("login.jsp");
+        response.sendRedirect("home");
     } 
 
     /** 

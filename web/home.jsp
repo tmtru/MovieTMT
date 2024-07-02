@@ -132,7 +132,7 @@
             </button>
         </div>
 
-
+            <c:if test="${sessionScope.moviesFollow.size()!=null && a!=null}">
         <div class="movie-follow slide-movie container-fluid">
             <h3>Đang theo dõi</h3>
             <button class="handle left-handle">
@@ -141,96 +141,34 @@
             <div class="movie-menu movie-popular-menu">
 
                 <div class="slider">
-                    <div class="movie-item">
-                        <div class="iq-card mb-3" >
+                    <c:forEach items="${sessionScope.moviesFollow}" var="mf">
+                        <div class="movie-item">
+                            <div class="iq-card mb-3" >
 
-                            <div class="movie-poster">
-                                <img src="assets/img/mv-birdbox.jpg" class="img-fluid rounded" alt="...">
-                            </div>
-                            <div class="movie-infor">
-                                <div class="iq-card-body">
-                                    <h5 class="iq-card-title">Card title</h5>
-                                    <p class="iq-card-text">This is a wider card with supporting text below as a natural
-                                        lead-in to additional
-                                        content. This content is a little bit longer.</p>
+                                <a href="movieload?movieid=${mf.id}" class="movie-poster">
+                                    <img src="${mf.posterLink}" class="img-fluid rounded" alt="${mf.title}">
+                                </a>
+                                <div class="movie-infor">
+                                    <div class="iq-card-body">
+                                        <h5 class="iq-card-title">${mf.title}</h5>
+                                        <h7 class="iq-card-text">| Người xem: ${mf.viewers}</h7><br/>
+                                        <h7 class="iq-card-text">| Rating: ${mf.rating}</h7><br/>
 
-                                    <a href="#" class="review-button">
-                                        <i class="fa-solid fa-comment"></i>
-                                        <span>Review</span>
-                                    </a>
-                                    <a href="#" class="watch-button">
-                                        <i class="fa-solid fa-play"></i>
-                                        <span>Watch Now</span>
-                                    </a>
+
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="title">
-                                <h6>Bird Box</h6>
-                                <span>Oc 5 2024</span>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="movie-item">
-                        <div class="iq-card mb-3" >
-
-                            <div class="movie-poster">
-                                <img src="assets/img/mv-godzillavskong.jpg" class="img-fluid rounded" alt="...">
-                            </div>
-                            <div class="movie-infor">
-                                <div class="iq-card-body">
-                                    <h5 class="iq-card-title">Card title</h5>
-                                    <p class="iq-card-text">This is a wider card with supporting text below as a natural
-                                        lead-in to additional
-                                        content. This content is a little bit longer.</p>
-
-                                    <a href="#" class="review-button">
-                                        <i class="fa-solid fa-comment"></i>
-                                        <span>Review</span>
-                                    </a>
-                                    <a href="#" class="watch-button">
-                                        <i class="fa-solid fa-play"></i>
-                                        <span>Watch Now</span>
-                                    </a>
+                                <a href="movieload?movieid=${mf.id}" class="watch-button">
+                                    <i class="fa-solid fa-play"></i>
+                                    <span>Watch Now</span>
+                                </a>
+                                <div class="title">
+                                    <h6>${mf.title}</h6>
+                                    <span>${mf.releaseTime}</span>
                                 </div>
-                            </div>
-                            <div class="title">
-                                <h6>Godzilla VS Kong</h6>
-                                <span>Oc 5 2024</span>
-                            </div>
 
+                            </div>
                         </div>
-                    </div>
-                    <div class="movie-item">
-                        <div class="iq-card mb-3" >
-
-                            <div class="movie-poster">
-                                <img src="assets/img/mv-starwars.webp" class="img-fluid rounded" alt="...">
-                            </div>
-                            <div class="movie-infor">
-                                <div class="iq-card-body">
-                                    <h5 class="iq-card-title">Card title</h5>
-                                    <p class="iq-card-text">This is a wider card with supporting text below as a natural
-                                        lead-in to additional
-                                        content. This content is a little bit longer.</p>
-
-                                    <a href="#" class="review-button">
-                                        <i class="fa-solid fa-comment"></i>
-                                        <span>Review</span>
-                                    </a>
-                                    <a href="#" class="watch-button">
-                                        <i class="fa-solid fa-play"></i>
-                                        <span>Watch Now</span>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="title">
-                                <h6>Godzilla VS Kong</h6>
-                                <span>Oc 5 2024</span>
-                            </div>
-
-                        </div>
-                    </div>
+                    </c:forEach>
 
                 </div>
 
@@ -239,6 +177,7 @@
                 <div class="text">&#8250;</div>
             </button>
         </div>
+        </c:if>
         <div id="carouselMovieBanner" class="carousel slide movie-banner" data-bs-ride="carousel" style="margin-top: 20px;">
             <div class="carousel-indicators">
                 <c:set var="carouselSlide1" value="0" />
@@ -284,50 +223,7 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-        <div class="movie slide-movie container-fluid">
-            <h3>Đánh giá cao</h3>
-            <button class="handle left-handle">
-                <div class="text">&#8249;</div>
-            </button>
-            <div class="movie-menu movie-menu">
 
-                <div class="slider">
-                    <c:forEach items="${sessionScope.hmoviesRating}" var="hmr">
-                        <div class="movie-item">
-                            <div class="iq-card mb-3" >
-
-                                <a href="movieload?movieid=${hmr.id}" class="movie-poster">
-                                    <img src="${hmr.posterLink}" class="img-fluid rounded" alt="${hmr.title}">
-                                </a>
-                                <div class="movie-infor">
-                                    <div class="iq-card-body">
-                                        <h5 class="iq-card-title">${hmr.title}</h5>
-                                        <h7 class="iq-card-text">| Người xem: ${hmr.viewers}</h7><br/>
-                                        <h7 class="iq-card-text">| Rating: ${hmr.rating}</h7><br/>
-
-
-                                    </div>
-                                </div>
-                                <a href="movieload?movieid=${hmr.id}" class="watch-button">
-                                    <i class="fa-solid fa-play"></i>
-                                    <span>Watch Now</span>
-                                </a>
-                                <div class="title">
-                                    <h6>${hmr.title}</h6>
-                                    <span>${hmr.releaseTime}</span>
-                                </div>
-
-                            </div>
-                        </div>
-                    </c:forEach>
-
-                </div>
-
-            </div>
-            <button class="handle right-handle">
-                <div class="text">&#8250;</div>
-            </button>
-        </div>
         <div class="movie slide-movie container-fluid">
             <h3>Mới nhất</h3>
             <button class="handle left-handle">
@@ -359,6 +255,50 @@
                                 <div class="title">
                                     <h6>${hmt.title}</h6>
                                     <span>${hmt.releaseTime}</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </c:forEach>
+
+                </div>
+
+            </div>
+            <button class="handle right-handle">
+                <div class="text">&#8250;</div>
+            </button>
+        </div>
+        <div class="movie slide-movie container-fluid">
+            <h3>Đánh giá cao</h3>
+            <button class="handle left-handle">
+                <div class="text">&#8249;</div>
+            </button>
+            <div class="movie-menu movie-menu">
+
+                <div class="slider">
+                    <c:forEach items="${sessionScope.hmoviesRating}" var="hmr">
+                        <div class="movie-item">
+                            <div class="iq-card mb-3" >
+
+                                <a href="movieload?movieid=${hmr.id}" class="movie-poster">
+                                    <img src="${hmr.posterLink}" class="img-fluid rounded" alt="${hmr.title}">
+                                </a>
+                                <div class="movie-infor">
+                                    <div class="iq-card-body">
+                                        <h5 class="iq-card-title">${hmr.title}</h5>
+                                        <h7 class="iq-card-text">| Người xem: ${hmr.viewers}</h7><br/>
+                                        <h7 class="iq-card-text">| Rating: ${hmr.rating}</h7><br/>
+
+
+                                    </div>
+                                </div>
+                                <a href="movieload?movieid=${hmr.id}" class="watch-button">
+                                    <i class="fa-solid fa-play"></i>
+                                    <span>Watch Now</span>
+                                </a>
+                                <div class="title">
+                                    <h6>${hmr.title}</h6>
+                                    <span>${hmr.releaseTime}</span>
                                 </div>
 
                             </div>

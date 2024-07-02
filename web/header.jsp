@@ -28,7 +28,7 @@
                                     <i class="fa-solid fa-bars navbar-toggler c-toggler" data-bs-toggle="offcanvas"
                                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                                        aria-expanded="false" aria-label="Toggle navigation"></i>
-                                    <a href="home.jsp" class="navbar-brand">
+                                    <a href="home" class="navbar-brand">
                                         <img src="./assets/img/logo.png" class="img-fluid logo" alt="" />
                                     </a>
                                     <div class="offcanvas offcanvas-start" style="background-color: rgb(17, 29, 82);"
@@ -59,7 +59,7 @@
                                             </li>
                                             <c:if test="${sessionScope.role==1}">
                                                 <li class="menu-item"><a href="./forAdmin/dashboard.jsp" style="color: orange!important;font-weight: bolder;">| For Admin</a></li>
-                                            </c:if> 
+                                                </c:if> 
 
                                         </ul>
                                     </div>
@@ -72,10 +72,13 @@
                                     <div class="offcanvas offcanvas-end" style="background-color: rgb(17, 29, 82);"
                                          tabindex="-1" id="navbarMobileRight">
                                         <div class="offcanvas-header">
-                                            <a href="profile.jsp" class="search-toggle user d-flex align-items-center">
-                                                <img src="${sessionScope.account.avatar}" class="img-fluid user-m rounded-circle" alt=""
-                                                     style="width: 50px" />
-                                            </a>
+                                            <c:if test="${a!=null}">
+                                                <a href="profile.jsp" class="search-toggle user d-flex align-items-center">
+                                                    <img src="${sessionScope.account.avatar}" class="img-fluid user-m rounded-circle" alt=""
+                                                         style="width: 50px" />
+                                                </a>
+                                            </c:if>
+
                                             <span class="user-name" style="color:white">${sessionScope.account.name}</span>
                                             <c:if test="${a!=null && a.accessRight eq 'Normal'}">
                                                 <div><a href="payment.jsp" class="payment ms-2" data-toggle="search-toggle">
@@ -100,10 +103,10 @@
                                                 <li>
 
                                                     <div class="search-box iq-search-bar">
-                                                        <form action="#" class="searchbox">
+                                                        <form action="classifymovies" class="searchbox">
                                                             <div class="form-group position-relative">
                                                                 <input type="text" class="text search-input font-size-12"
-                                                                       placeholder="type here to search..." />
+                                                                       name="search" placeholder="Type here to search..." />
                                                                 <div class="device-search">
                                                                     <i class="search-link fa fa-search"></i>
                                                                 </div>
@@ -117,16 +120,18 @@
                                                     <div class="iq-sub-dropdown iq-user-dropdown">
                                                         <div class="iq-card shadow-none m-0">
                                                             <div class="iq-card-body p-0 pl-3 pr-3">
-                                                                <a href="profile.jsp" class="iq-sub-card setting-dropdown">
-                                                                    <div class="media align-items-center row g-0">
-                                                                        <div class="right-icon col-2">
-                                                                            <i class="fa fa-user text-primary"></i>
+                                                                <c:if test="${a!=null}">
+                                                                    <a href="profile.jsp" class="iq-sub-card setting-dropdown">
+                                                                        <div class="media align-items-center row g-0">
+                                                                            <div class="right-icon col-2">
+                                                                                <i class="fa fa-user text-primary"></i>
+                                                                            </div>
+                                                                            <div class="media-body ml-3 col-10">
+                                                                                <h6 class="mb-0">Profile</h6>
+                                                                            </div>
                                                                         </div>
-                                                                        <div class="media-body ml-3 col-10">
-                                                                            <h6 class="mb-0">Profile</h6>
-                                                                        </div>
-                                                                    </div>
-                                                                </a>
+                                                                    </a>
+                                                                </c:if>
                                                                 <a href="#" class="iq-sub-card setting-dropdown">
                                                                     <div class="media align-items-center row g-0">
                                                                         <div class="right-icon col-2">
@@ -147,16 +152,30 @@
                                                                         </div>
                                                                     </div>
                                                                 </a>
-                                                                <a href="logout" class="iq-sub-card setting-dropdown">
-                                                                    <div class="media align-items-center row g-0">
-                                                                        <div class="right-icon col-2">
-                                                                            <i class="fa fa-sign-out text-primary"></i>
+                                                                <c:if test="${a!=null}">
+                                                                    <a href="logout" class="iq-sub-card setting-dropdown">
+                                                                        <div class="media align-items-center row g-0">
+                                                                            <div class="right-icon col-2">
+                                                                                <i class="fa fa-sign-out text-primary"></i>
+                                                                            </div>
+                                                                            <div class="media-body ml-3 col-10">
+                                                                                <h6 class="mb-0">Logout</h6>
+                                                                            </div>
                                                                         </div>
-                                                                        <div class="media-body ml-3 col-10">
-                                                                            <h6 class="mb-0">Logout</h6>
+                                                                    </a>
+                                                                </c:if>
+                                                                <c:if test="${a==null}">
+                                                                    <a href="login.jsp" class="iq-sub-card setting-dropdown">
+                                                                        <div class="media align-items-center row g-0">
+                                                                            <div class="right-icon col-2">
+                                                                                <i class="fa-solid fa-right-to-bracket"></i>
+                                                                            </div>
+                                                                            <div class="media-body ml-3 col-10">
+                                                                                <h6 class="mb-0">Login</h6>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                </a>
+                                                                    </a>
+                                                                </c:if>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -215,10 +234,10 @@
                                     <div class="menu-main-menu-container">
                                         <ul class="d-flex align-items-center list-inline m-0">
                                             <li class="nav-item nav-icon">
-                                                <form action="#" class="search-box">
+                                                <form action="classifymovies" class="search-box">
                                                     <div class="form-group position-relative">
                                                         <input type="text" class="text search-input font-size-12"
-                                                               placeholder="Type here to search..." />
+                                                               name="search" placeholder="Type here to search..." />
                                                         <button type="submit" class="device-search">
                                                             <i class="fa fa-search"></i>
                                                         </button>
@@ -236,7 +255,7 @@
                                             </c:if>
                                             <li class="nav-item nav-icon">
                                                 <a href="#" class="search-toggle" data-toggle="search-toggle">
-                                                    <i class="fa fa-bell"></i>
+                                                    <i class="fa fa-bell p-2"></i>
                                                     <span class="bg-danger dots"></span>
                                                 </a>
                                                 <div class="iq-sub-dropdown iq-notify-dropdown">
@@ -279,75 +298,106 @@
                                                     </div>
                                                 </div>
                                             </li>
+                                            <c:if test="${a!=null}">
+                                                <li class="nav-item nav-icon account g-4">
 
-                                            <li class="nav-item nav-icon account">
-                                                <a href="#" class="search-toggle d-flex align-items-center p-0">
-                                                    <img src="${sessionScope.account.avatar}" class="img-fluid user-m rounded-circle"
-                                                         alt="" />
-                                                </a>
-                                                <c:if test="${a!=null && a.accessRight eq 'Vip'}">
+                                                    <a href="#" class="search-toggle d-flex align-items-center p-0">
+                                                        <img src="${sessionScope.account.avatar}" class="img-fluid user-m rounded-circle"
+                                                             alt="" />
+                                                    </a>
 
-                                                    <div class="payment">
-                                                        <i class="fa-solid fa-crown"></i>
-                                                        <span class="bg-danger dots"></span>
-                                                    </div>
+                                                    <c:if test="${a!=null && a.accessRight eq 'Vip'}">
 
-                                                </c:if>
-
-                                                <div class="iq-sub-dropdown iq-user-dropdown">
-                                                    <div class="iq-card shadow-none m-0">
-                                                        <div class="iq-card-body p-0 pl-3 pr-3">
-                                                            <a href="profile.jsp" class="iq-sub-card setting-dropdown">
-                                                                <div class="media align-items-center p-0 m-0 row ">
-                                                                    <div class="right-icon col-sm-2">
-                                                                        <i class="fa fa-user text-primary"></i>
-                                                                    </div>
-                                                                    <div class="media-body ml-3 col-sm-10">
-                                                                        <h6 class="mb-0">Profile</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-                                                            <a href="#" class="iq-sub-card setting-dropdown">
-                                                                <div class="media align-items-center p-0 m-0  row ">
-                                                                    <div class="right-icon col-sm-2">
-                                                                        <i class="fa fa-cog text-primary"></i>
-                                                                    </div>
-                                                                    <div class="media-body ml-3 col-sm-10">
-                                                                        <h6 class="mb-0">Settings</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-                                                            <a href="#" class="iq-sub-card setting-dropdown">
-                                                                <div class="media align-items-center p-0 m-0 row">
-                                                                    <div class="right-icon col-sm-2">
-                                                                        <i class="fa fa-inr text-primary"></i>
-                                                                    </div>
-                                                                    <div class="media-body ml-3 col-sm-10">
-                                                                        <h6 class="mb-0">Pricing Plan</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-                                                            <a href="logout" class="iq-sub-card setting-dropdown">
-                                                                <div class="media align-items-center p-0 m-0 row">
-                                                                    <div class="right-icon col-sm-2">
-                                                                        <i class="fa fa-sign-out text-primary"></i>
-                                                                    </div>
-                                                                    <div class="media-body ml-3 col-sm-10">
-                                                                        <h6 class="mb-0">Logout</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
+                                                        <div class="payment">
+                                                            <i class="fa-solid fa-crown"></i>
+                                                            <span class="bg-danger dots"></span>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </li>
 
-                                            <li class="nav-item nav-icon">
-                                                <a href="logout" class="">
-                                                    <i class="fa-solid fa-right-from-bracket"></i>
-                                                </a>
+                                                    </c:if>
 
-                                            </li>
+                                                    <c:if test="${a!=null}">
+                                                        <div class="iq-sub-dropdown iq-user-dropdown">
+                                                            <div class="iq-card shadow-none m-0">
+                                                                <div class="iq-card-body p-0 pl-3 pr-3">
+                                                                    <a href="profile.jsp" class="iq-sub-card setting-dropdown">
+                                                                        <div class="media align-items-center p-0 m-0 row ">
+                                                                            <div class="right-icon col-sm-2">
+                                                                                <i class="fa fa-user text-primary"></i>
+                                                                            </div>
+                                                                            <div class="media-body ml-3 col-sm-10">
+                                                                                <h6 class="mb-0">Profile</h6>
+                                                                            </div>
+                                                                        </div>
+                                                                    </a>
+                                                                    <a href="#" class="iq-sub-card setting-dropdown">
+                                                                        <div class="media align-items-center p-0 m-0  row ">
+                                                                            <div class="right-icon col-sm-2">
+                                                                                <i class="fa fa-cog text-primary"></i>
+                                                                            </div>
+                                                                            <div class="media-body ml-3 col-sm-10">
+                                                                                <h6 class="mb-0">Settings</h6>
+                                                                            </div>
+                                                                        </div>
+                                                                    </a>
+                                                                    <a href="#" class="iq-sub-card setting-dropdown">
+                                                                        <div class="media align-items-center p-0 m-0 row">
+                                                                            <div class="right-icon col-sm-2">
+                                                                                <i class="fa fa-inr text-primary"></i>
+                                                                            </div>
+                                                                            <div class="media-body ml-3 col-sm-10">
+                                                                                <h6 class="mb-0">Pricing Plan</h6>
+                                                                            </div>
+                                                                        </div>
+                                                                    </a>
+                                                                    <c:if test="${a!=null}">
+                                                                        <a href="logout" class="iq-sub-card setting-dropdown">
+                                                                            <div class="media align-items-center p-0 m-0 row">
+                                                                                <div class="right-icon col-sm-2">
+                                                                                    <i class="fa fa-sign-out text-primary"></i>
+                                                                                </div>
+                                                                                <div class="media-body ml-3 col-sm-10">
+                                                                                    <h6 class="mb-0">Logout</h6>
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                    </c:if>
+                                                                    <c:if test="${a==null}">
+                                                                        <a href="login.jsp" class="iq-sub-card setting-dropdown">
+                                                                            <div class="media align-items-center p-0 m-0 row">
+                                                                                <div class="right-icon col-sm-2">
+                                                                                    <i class="fa-solid fa-right-to-bracket"></i>
+                                                                                </div>
+                                                                                <div class="media-body ml-3 col-sm-10">
+                                                                                    <h6 class="mb-0">Login</h6>
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                    </c:if>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </c:if>
+                                                </li>
+                                            </c:if>
+                                            <c:if test="${a!=null}">
+
+                                                <li class="nav-item nav-icon">
+                                                    <a href="logout" class="">
+                                                        <i class="fa-solid fa-right-from-bracket"></i>
+                                                    </a>
+
+                                                </li>
+                                            </c:if>
+                                            <c:if test="${a==null}">
+
+                                                <li class="nav-item nav-icon">
+                                                    <a href="login.jsp" class="">
+                                                        <i class="fa-solid fa-right-to-bracket"></i>
+                                                    </a>
+
+                                                </li>
+                                            </c:if>
+
                                         </ul>
                                     </div>
                                 </div>

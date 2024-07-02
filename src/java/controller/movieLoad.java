@@ -122,13 +122,9 @@ public class movieLoad extends HttpServlet {
         }
         //save history view of user
         boolean isViewed=historyDAO.userViewedMovie(userID, Integer.parseInt(id), Integer.parseInt(ep));
-        if (!isViewed) {
-            daom.increaseView(1,Integer.parseInt(id));
-            try {
-                historyDAO.addHistory(userID,Integer.parseInt(id) , Integer.parseInt(ep), null);
-            } catch (SQLException ex) {
-                System.out.println(ex);
-            }
+        if (!isViewed) {          
+            if (historyDAO.addHistory(userID,Integer.parseInt(id) , Integer.parseInt(ep), null))
+                daom.increaseView(1,Integer.parseInt(id));
         }
 
         String title = normalizeVietnamese(m.getTitle());
