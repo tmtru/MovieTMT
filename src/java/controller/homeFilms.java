@@ -78,6 +78,15 @@ public class homeFilms extends HttpServlet {
         ArrayList<movie> movies = daom.getAllMovie("Viewers", 0);
         ArrayList<movie> moviesR = daom.getAllMovie("Rating", 0);
         ArrayList<movie> moviesN = daom.getAllMovie("ReleaseYear", 0);
+        ArrayList<movie> moviesCartoon = daom.getMovieByGenre("Hoạt hình");
+        //phim co trang 
+        ArrayList<movie> moviesCT = daom.getMovieByGenre("Cổ trang");
+        //phim tinh cam
+        ArrayList<movie> moviesLove = daom.getMovieByGenre("Tình cảm");
+        //phim kinh dị
+        ArrayList<movie> moviesHorror = daom.getMovieByGenre("Kinh dị");
+       // phim chinh kich
+       ArrayList<movie> moviesDrama = daom.getMovieByGenre("Chính kịch");
         BannerDAO daob = new BannerDAO();
         List<banner> banners0 = daob.getAllBanner("0");
         List<banner> banners1 = daob.getAllBanner("1");
@@ -101,6 +110,7 @@ public class homeFilms extends HttpServlet {
             moviesBanners1.add(m);
         }
         HttpSession session = request.getSession();
+        //phum dang theo doi
         HistoryDAO daoh = new HistoryDAO();
         AccountDAO daoa = new AccountDAO();
         account a = (account) session.getAttribute("account");
@@ -132,8 +142,14 @@ public class homeFilms extends HttpServlet {
         session.setAttribute("hmoviesView", movies);
         session.setAttribute("hmoviesRating", moviesR);
         session.setAttribute("hmoviesTime", moviesN);
+        session.setAttribute("hmoviesCartoon", moviesCartoon);
+        session.setAttribute("hmoviesLove", moviesLove);
+        session.setAttribute("hmoviesHorror", moviesHorror);
+        session.setAttribute("hmoviesDrama", moviesDrama);
+        session.setAttribute("hmoviesCT", moviesCT);
         session.setAttribute("hbanners0", banners0);
         session.setAttribute("hbanners1", banners1);
+        
         session.setAttribute("hmoviesBanners0", moviesBanners0);
         session.setAttribute("hmoviesBanners1", moviesBanners1);
         request.getRequestDispatcher("home.jsp").forward(request, response);

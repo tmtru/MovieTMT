@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="java.util.List,java.util.Map,java.util.HashMap , java.util.ArrayList, model.movie,model.genre,model.episode,model.account,model.history, dal.MovieDAO, dal.GenreDAO, dal.EpisodeDAO,dal.AccountDAO,java.util.Map.Entry,dal.HistoryDAO"%>
+<%@page import="java.util.List,java.util.stream.Collectors,java.util.Map,java.util.HashMap , java.util.ArrayList, model.movie,model.genre,model.episode,model.account,model.history, dal.MovieDAO, dal.GenreDAO, dal.EpisodeDAO,dal.AccountDAO,java.util.Map.Entry,dal.HistoryDAO"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -92,7 +92,11 @@
             MovieDAO movieDAO = new MovieDAO();
             Map<Integer, Integer> weeklyViews = historyDAO.getWeeklyViews();
             List<Entry<Integer, Integer>> rankFilms = new ArrayList<>(weeklyViews.entrySet());
-            request.setAttribute("rankFilms", rankFilms);
+            List<Entry<Integer, Integer>> top5Films=null;
+            if (rankFilms.size()>5) top5Films = rankFilms.stream()
+                                                           .limit(5)
+                                                           .collect(Collectors.toList());
+            request.setAttribute("rankFilms", top5Films);
             request.setAttribute("movieDAO",movieDAO);
             %>
 

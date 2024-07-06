@@ -132,53 +132,53 @@
             </button>
         </div>
 
-            <c:if test="${sessionScope.moviesFollow.size()!=null && a!=null}">
-        <div class="movie-follow slide-movie container-fluid">
-            <h3>Đang theo dõi</h3>
-            <button class="handle left-handle">
-                <div class="text">&#8249;</div>
-            </button>
-            <div class="movie-menu movie-popular-menu">
+        <c:if test="${sessionScope.moviesFollow.size()!=null && sessionScope.account!=null}">
+            <div class="movie-follow slide-movie container-fluid">
+                <h3>Đang theo dõi</h3>
+                <button class="handle left-handle">
+                    <div class="text">&#8249;</div>
+                </button>
+                <div class="movie-menu movie-popular-menu">
 
-                <div class="slider">
-                    <c:forEach items="${sessionScope.moviesFollow}" var="mf">
-                        <div class="movie-item">
-                            <div class="iq-card mb-3" >
+                    <div class="slider">
+                        <c:forEach items="${sessionScope.moviesFollow}" var="mf">
+                            <div class="movie-item">
+                                <div class="iq-card mb-3" >
 
-                                <a href="movieload?movieid=${mf.id}" class="movie-poster">
-                                    <img src="${mf.posterLink}" class="img-fluid rounded" alt="${mf.title}">
-                                </a>
-                                <div class="movie-infor">
-                                    <div class="iq-card-body">
-                                        <h5 class="iq-card-title">${mf.title}</h5>
-                                        <h7 class="iq-card-text">| Người xem: ${mf.viewers}</h7><br/>
-                                        <h7 class="iq-card-text">| Rating: ${mf.rating}</h7><br/>
+                                    <a href="movieload?movieid=${mf.id}" class="movie-poster">
+                                        <img src="${mf.posterLink}" class="img-fluid rounded" alt="${mf.title}">
+                                    </a>
+                                    <div class="movie-infor">
+                                        <div class="iq-card-body">
+                                            <h5 class="iq-card-title">${mf.title}</h5>
+                                            <h7 class="iq-card-text">| Người xem: ${mf.viewers}</h7><br/>
+                                            <h7 class="iq-card-text">| Rating: ${mf.rating}</h7><br/>
 
 
+                                        </div>
                                     </div>
-                                </div>
-                                <a href="movieload?movieid=${mf.id}" class="watch-button">
-                                    <i class="fa-solid fa-play"></i>
-                                    <span>Watch Now</span>
-                                </a>
-                                <div class="title">
-                                    <h6>${mf.title}</h6>
-                                    <span>${mf.releaseTime}</span>
-                                </div>
+                                    <a href="movieload?movieid=${mf.id}" class="watch-button">
+                                        <i class="fa-solid fa-play"></i>
+                                        <span>Watch Now</span>
+                                    </a>
+                                    <div class="title">
+                                        <h6>${mf.title}</h6>
+                                        <span>${mf.releaseTime}</span>
+                                    </div>
 
+                                </div>
                             </div>
-                        </div>
-                    </c:forEach>
+                        </c:forEach>
+
+                    </div>
 
                 </div>
-
+                <button class="handle right-handle">
+                    <div class="text">&#8250;</div>
+                </button>
             </div>
-            <button class="handle right-handle">
-                <div class="text">&#8250;</div>
-            </button>
-        </div>
         </c:if>
-        <div id="carouselMovieBanner" class="carousel slide movie-banner" data-bs-ride="carousel" style="margin-top: 20px;">
+        <div id="carouselMovieBanner" class="carousel slide movie-banner mt-5 mb-5" data-bs-ride="carousel" style="margin-top: 20px;">
             <div class="carousel-indicators">
                 <c:set var="carouselSlide1" value="0" />
                 <c:forEach items="${sessionScope.hbanners1}" var="hb1">
@@ -312,6 +312,227 @@
                 <div class="text">&#8250;</div>
             </button>
         </div>
+            <div class="movie slide-movie container-fluid">
+            <h3>Phim Cổ trang hay</h3>
+            <button class="handle left-handle">
+                <div class="text">&#8249;</div>
+            </button>
+            <div class="movie-menu movie-menu">
+
+                <div class="slider">
+                    <c:forEach items="${sessionScope.hmoviesCT}" var="hmct">
+                        <div class="movie-item">
+                            <div class="iq-card mb-3" >
+
+                                <a href="movieload?movieid=${hmct.id}" class="movie-poster">
+                                    <img src="${hmct.posterLink}" class="img-fluid rounded" alt="${hmct.title}">
+                                </a>
+                                <div class="movie-infor">
+                                    <div class="iq-card-body">
+                                        <h5 class="iq-card-title">${hmct.title}</h5>
+                                        <h7 class="iq-card-text">| Người xem: ${hmct.viewers}</h7><br/>
+                                        <h7 class="iq-card-text">| Rating: ${hmct.rating}</h7><br/>
+
+
+                                    </div>
+                                </div>
+                                <a href="movieload?movieid=${hmct.id}" class="watch-button">
+                                    <i class="fa-solid fa-play"></i>
+                                    <span>Watch Now</span>
+                                </a>
+                                <div class="title">
+                                    <h6>${hmct.title}</h6>
+                                    <span>${hmct.releaseTime}</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </c:forEach>
+
+                </div>
+
+            </div>
+            <button class="handle right-handle">
+                <div class="text">&#8250;</div>
+            </button>
+        </div>
+            <div class="movie slide-movie container-fluid">
+            <h3>Thế giới 2D </h3>
+            <button class="handle left-handle">
+                <div class="text">&#8249;</div>
+            </button>
+            <div class="movie-menu movie-menu">
+
+                <div class="slider">
+                    <c:forEach items="${sessionScope.hmoviesCartoon}" var="hmr">
+                        <div class="movie-item">
+                            <div class="iq-card mb-3" >
+
+                                <a href="movieload?movieid=${hmr.id}" class="movie-poster">
+                                    <img src="${hmr.posterLink}" class="img-fluid rounded" alt="${hmr.title}">
+                                </a>
+                                <div class="movie-infor">
+                                    <div class="iq-card-body">
+                                        <h5 class="iq-card-title">${hmr.title}</h5>
+                                        <h7 class="iq-card-text">| Người xem: ${hmr.viewers}</h7><br/>
+                                        <h7 class="iq-card-text">| Rating: ${hmr.rating}</h7><br/>
+
+
+                                    </div>
+                                </div>
+                                <a href="movieload?movieid=${hmr.id}" class="watch-button">
+                                    <i class="fa-solid fa-play"></i>
+                                    <span>Watch Now</span>
+                                </a>
+                                <div class="title">
+                                    <h6>${hmr.title}</h6>
+                                    <span>${hmr.releaseTime}</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </c:forEach>
+
+                </div>
+
+            </div>
+            <button class="handle right-handle">
+                <div class="text">&#8250;</div>
+            </button>
+        </div>
+            <div class="movie slide-movie container-fluid">
+            <h3>Phim Tình cảm Lãng mạn </h3>
+            <button class="handle left-handle">
+                <div class="text">&#8249;</div>
+            </button>
+            <div class="movie-menu movie-menu">
+
+                <div class="slider">
+                    <c:forEach items="${sessionScope.hmoviesLove}" var="hmr">
+                        <div class="movie-item">
+                            <div class="iq-card mb-3" >
+
+                                <a href="movieload?movieid=${hmr.id}" class="movie-poster">
+                                    <img src="${hmr.posterLink}" class="img-fluid rounded" alt="${hmr.title}">
+                                </a>
+                                <div class="movie-infor">
+                                    <div class="iq-card-body">
+                                        <h5 class="iq-card-title">${hmr.title}</h5>
+                                        <h7 class="iq-card-text">| Người xem: ${hmr.viewers}</h7><br/>
+                                        <h7 class="iq-card-text">| Rating: ${hmr.rating}</h7><br/>
+
+
+                                    </div>
+                                </div>
+                                <a href="movieload?movieid=${hmr.id}" class="watch-button">
+                                    <i class="fa-solid fa-play"></i>
+                                    <span>Watch Now</span>
+                                </a>
+                                <div class="title">
+                                    <h6>${hmr.title}</h6>
+                                    <span>${hmr.releaseTime}</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </c:forEach>
+
+                </div>
+
+            </div>
+            <button class="handle right-handle">
+                <div class="text">&#8250;</div>
+            </button>
+        </div>
+            <div class="movie slide-movie container-fluid">
+            <h3>Phim Kinh dị </h3>
+            <button class="handle left-handle">
+                <div class="text">&#8249;</div>
+            </button>
+            <div class="movie-menu movie-menu">
+
+                <div class="slider">
+                    <c:forEach items="${sessionScope.hmoviesHorror}" var="hmr">
+                        <div class="movie-item">
+                            <div class="iq-card mb-3" >
+
+                                <a href="movieload?movieid=${hmr.id}" class="movie-poster">
+                                    <img src="${hmr.posterLink}" class="img-fluid rounded" alt="${hmr.title}">
+                                </a>
+                                <div class="movie-infor">
+                                    <div class="iq-card-body">
+                                        <h5 class="iq-card-title">${hmr.title}</h5>
+                                        <h7 class="iq-card-text">| Người xem: ${hmr.viewers}</h7><br/>
+                                        <h7 class="iq-card-text">| Rating: ${hmr.rating}</h7><br/>
+
+
+                                    </div>
+                                </div>
+                                <a href="movieload?movieid=${hmr.id}" class="watch-button">
+                                    <i class="fa-solid fa-play"></i>
+                                    <span>Watch Now</span>
+                                </a>
+                                <div class="title">
+                                    <h6>${hmr.title}</h6>
+                                    <span>${hmr.releaseTime}</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </c:forEach>
+
+                </div>
+
+            </div>
+            <button class="handle right-handle">
+                <div class="text">&#8250;</div>
+            </button>
+        </div>
+            <div class="movie slide-movie container-fluid">
+            <h3>Phim Tâm lí xã hội </h3>
+            <button class="handle left-handle">
+                <div class="text">&#8249;</div>
+            </button>
+            <div class="movie-menu movie-menu">
+
+                <div class="slider">
+                    <c:forEach items="${sessionScope.hmoviesDrama}" var="hmr">
+                        <div class="movie-item">
+                            <div class="iq-card mb-3" >
+
+                                <a href="movieload?movieid=${hmr.id}" class="movie-poster">
+                                    <img src="${hmr.posterLink}" class="img-fluid rounded" alt="${hmr.title}">
+                                </a>
+                                <div class="movie-infor">
+                                    <div class="iq-card-body">
+                                        <h5 class="iq-card-title">${hmr.title}</h5>
+                                        <h7 class="iq-card-text">| Người xem: ${hmr.viewers}</h7><br/>
+                                        <h7 class="iq-card-text">| Rating: ${hmr.rating}</h7><br/>
+
+
+                                    </div>
+                                </div>
+                                <a href="movieload?movieid=${hmr.id}" class="watch-button">
+                                    <i class="fa-solid fa-play"></i>
+                                    <span>Watch Now</span>
+                                </a>
+                                <div class="title">
+                                    <h6>${hmr.title}</h6>
+                                    <span>${hmr.releaseTime}</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </c:forEach>
+
+                </div>
+
+            </div>
+            <button class="handle right-handle">
+                <div class="text">&#8250;</div>
+            </button>
+        </div>
+
         <jsp:include page="footer.jsp" /> 
     </body>
     <script src="js/main.js"></script>

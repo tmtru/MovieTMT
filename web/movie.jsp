@@ -44,14 +44,33 @@
                         <img src="${m.posterLink}" class="img-fluid"/>
                     </c:when>
                     <c:otherwise>
+                        <c:if test="${wep.accessType eq 'Free'}">
                         <iframe src="${wep.linkEp}${!wep.linkEp.contains('youtube') ? '?&loop=1&autoplay=1&muted=1' : ''}"
                                 allow="autoplay; fullscreen" allowfullscreen></iframe>
+                                </c:if>
+                        <c:if test="${wep.accessType eq 'Paid' && (acc.accessRight eq 'Vip' || acc.accessRight eq 'Full')}">
+                        <iframe src="${wep.linkEp}${!wep.linkEp.contains('youtube') ? '?&loop=1&autoplay=1&muted=1' : ''}"
+                                allow="autoplay; fullscreen" allowfullscreen></iframe>
+                                </c:if>
+                        <c:if test="${wep.accessType eq 'Paid' && acc.accessRight eq 'Normal'}">
+                            
+                            <div class="message-for-vip-ep">
+                                <p>Vui lòng đăng kí thành viên VIP để có thể xem tiếp</p>
+                                <a href="payment.jsp" class="payment" data-toggle="search-toggle">
+                                                        Đăng kí VIP <i class="fa-solid fa-crown"></i>
+                                                        <span class="bg-danger dots"></span>
+                                                    </a>
+                            
+                            </div>
+                        
+                        </c:if>
                         </c:otherwise>
                     </c:choose>
 
             </div>
             <div class="movie-details">
                 <div class="movie-title">
+                    <c:if test="${wep !=null}"><h4 class="mb-3">${wep.name}</h4></c:if>
                     <h3>${m.title}</h3>
                     <span class="views me-5" style="color: #cccccc">${m.viewers} lượt xem</span>
                     <span class="rating">
@@ -103,7 +122,7 @@
                 <c:set var="unlike" value="${isLiked == true? 'select' : ''}"/>
                 <c:set var="save" value="${isSaved == false ? 'select' : ''}"/>
                 <c:set var="unsave" value="${isSaved == true? 'select' : ''}"/>
-                <div class="more-infor">
+                <div class="more-infor mt-5">
                     <div class="actions d-flex ">
 
                         <a href="movielike?action=like" class="icons like"><i class="fa-regular fa-heart ${unlike}"></i><i class="fa-solid fa-heart ${like}"
@@ -156,6 +175,7 @@
                                 <div class="iq-card mb-3">
                                     <a href="movieload?ep=${e.chapterID}" class="movie-poster">
                                         <img src="${e.thumbnail}" class="img-fluid"/>
+                                        <c:if test="${e.accessType eq 'Paid'}"><div class="vip-ep">VIP</div></c:if>
                                     </a>
                                     <div class="movie-infor">
                                         <div class="iq-card-body">

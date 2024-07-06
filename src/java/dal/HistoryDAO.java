@@ -115,12 +115,27 @@ public class HistoryDAO extends DBContext {
         }
     }
 
-    public boolean userViewedMovie(int userID, int movieID, int chapterID) {
+    public boolean userViewedMovieEp(int userID, int movieID, int chapterID) {
         String sql = "SELECT COUNT(*) AS count FROM History WHERE UserID = ? AND MovieID = ? AND ChapterID=?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, userID);
             ps.setInt(2, movieID);
             ps.setInt(3, chapterID);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next() && rs.getInt("count") > 0) {
+                    return true; // Người dùng đã xem bộ phim tập này
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false; // Người dùng chưa xem bộ phim tập này
+    }
+    public boolean userViewedMovie(int userID, int movieID) {
+        String sql = "SELECT COUNT(*) AS count FROM History WHERE UserID = ? AND MovieID = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, userID);
+            ps.setInt(2, movieID);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next() && rs.getInt("count") > 0) {
                     return true; // Người dùng đã xem bộ phim tập này

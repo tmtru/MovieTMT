@@ -14,25 +14,26 @@ import model.genre;
  *
  * @author Admin
  */
-public class GenreDAO extends DBContext{
+public class GenreDAO extends DBContext {
+
     public ArrayList<genre> getAllGenres() {
         String sql = "SELECT * FROM Genre";
-        ArrayList<genre> g=new ArrayList<>();
-        
-        try (PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            
+        ArrayList<genre> g = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
             while (rs.next()) {
-                int genreID=rs.getInt("GenreID");
-                String name=rs.getNString("GenreName");
+                int genreID = rs.getInt("GenreID");
+                String name = rs.getNString("GenreName");
                 g.add(new genre(genreID, name));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         return g;
     }
+
     private int getGenreIdByName(String genreName) {
         String sql = "SELECT GenreID FROM Genre WHERE GenreName = ?";
         int genreId = 0;
@@ -57,5 +58,18 @@ public class GenreDAO extends DBContext{
             e.printStackTrace();
         }
         return genreId;
+    }
+
+    public boolean addGenre(String genreName) {
+        String sql = "INSERT INTO Genre (GenreName) VALUES(?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setNString(1, genreName);
+            int rowsAffected = st.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

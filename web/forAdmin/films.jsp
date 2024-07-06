@@ -210,7 +210,13 @@
                         <thead style=" background-color: rgb(146 150 255 / 13%); ">
                             <tr>
                                 <th>Tên</th>
-                                <th>Thể loại</th>
+                                <th class="genre">Thể loại <span onclick="showGenreInput()" class="add-genre"><i class="fa-solid fa-plus ms-2" style="background-color: #003399; padding: 5px; border-radius:50%;"></i></span>
+                                    <div class="genre-input">
+                                        <form action="addGenre">
+                                            <input type="text" name="newgenre" placeholder=""/> 
+                                            <button type="submit" class="btn btn-primary">Thêm</button>
+                                        </form>
+                                    </div></th>
                                 <th colspan="3">Nội dung</th>
                                 <th >Ảnh</th>
                                 <th>Hành Động</th>
@@ -311,6 +317,15 @@
                 </div>
             </div>
         </div>
+        <script>
+            function showGenreInput() {
+                let target = document.querySelector(".genre-input");
+                target.style.display = "block";
+                let plus=document.querySelector(".add-genre");
+                plus.style.display="none";
+            }
+
+        </script>
     </body>
     <script src="../js/addNewFilms.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

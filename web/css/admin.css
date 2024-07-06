@@ -394,6 +394,25 @@ tr .add-a{
 .rejected {
     color: #e86786;
 }
+.genre{
+    position: relative;
+}
+.genre-input{
+    display: inline;
+    display: none;
+
+}
+.add-genre{
+    cursor: pointer;
+}
+.genre-input input{
+    border-radius: 5px;
+}
+.genre-input button{
+    border-radius: 5px;
+    font-size: 14px;
+    
+}
 
 /* responsive starts here */
 @media screen and (max-width:1350px) {

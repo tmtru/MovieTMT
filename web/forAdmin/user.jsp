@@ -31,6 +31,13 @@
                 request.setAttribute("accounts", accounts);
                 
                 %>
+                <%  MovieDAO daom = new MovieDAO();
+                    int numberOfFilms=daom.numberOfFilms();
+                    int allViews=daom.allViews();
+                    request.setAttribute("nbfilms", numberOfFilms);
+                    request.setAttribute("allviews", allViews);
+
+                %>
             <div class="overview">
                 <div class="title">
                     <h2 class="section--title">Overview</h2>
@@ -50,7 +57,7 @@
                         <div class="card--data">
                             <div class="card--content">
                                 <h5 class="card--title">Lượt truy cập</h5>
-                                <h1>102</h1>
+                                <h1>${allviews}</h1>
                             </div>
 
                             <i class="fa-solid fa-eye card--icon--lg"></i>

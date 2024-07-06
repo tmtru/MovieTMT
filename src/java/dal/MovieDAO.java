@@ -403,7 +403,7 @@ public class MovieDAO extends DBContext {
                 + "FROM Movie m "
                 + "INNER JOIN Movie_Genre mg ON m.MovieID = mg.MovieID "
                 + "INNER JOIN Genre g ON mg.GenreID = g.GenreID "
-                + "WHERE g.GenreName = ?";
+                + "WHERE g.GenreName = ? ORDER BY m.Rating DESC";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setNString(1, genreName);

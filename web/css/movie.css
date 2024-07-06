@@ -6,7 +6,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Created on : Jun 26, 2024, 11:01:06 PM
     Author     : Admin
 */
-
+@import url('https://fonts.googleapis.com/css2?family=Anton+SC&family=Catamaran:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton+SC&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 body{
     color: white;
@@ -16,10 +17,15 @@ body{
     margin-top: 100px;
     text-align: center;
 }
-.container-fluid.movie iframe, .container-fluid.movie .movie-video img{
+.container-fluid.movie iframe{
     width: 80%;
     height: 45vw;
     object-fit: cover;
+}
+.container-fluid.movie .movie-video img{
+    width: 350px;
+    max-height: 120vh;
+
 }
 .movie-details{
     margin-left: 10%;
@@ -168,7 +174,27 @@ div.movie-eps.slide-movie.container-fluid{
 .wish{
     color:#35b69f;
 }
-
+.movie-poster{
+    position: relative;
+    display: block;
+}
+.vip-ep {
+    position: absolute;
+    top:20px;
+    right:2px;
+    font-family: "Catamaran", sans-serif;
+    background-color: #8592e7;
+    padding: 2px 5px;
+    font-weight: bold;
+    
+}
+.message-for-vip-ep{
+    color: #999999;
+    font-size: 30px;
+    margin: 150px;
+    padding: 20px;
+    
+}
 
 .user-feed{
 
@@ -184,9 +210,11 @@ div.movie-eps.slide-movie.container-fluid{
     .movie {
 
     }
-    .container-fluid.movie video {
-        width: 100%;
-    }
+    .container-fluid.movie iframe{
+    width: 100%;
+    height: 55vw;
+    object-fit: cover;
+}
 
     .movie-details {
 

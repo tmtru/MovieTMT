@@ -77,10 +77,10 @@ public class movieLoad extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
-         AccountDAO accountDAO = new AccountDAO();
+        AccountDAO accountDAO = new AccountDAO();
         HttpSession session = request.getSession();
-        account a=(account) session.getAttribute("account");
-        int userID=accountDAO.getIDbyEmail(a.getEmail());
+        account a = (account) session.getAttribute("account");
+        int userID = accountDAO.getIDbyEmail(a.getEmail());
         MovieDAO daom = new MovieDAO();
         movie currentMovie;
         String id = request.getParameter("movieid");
@@ -99,10 +99,10 @@ public class movieLoad extends HttpServlet {
         List<episode> eps = daoep.getAllEpsByMovieID(Integer.parseInt(m.getId()));
 
         session.setAttribute("watchingeps", eps);
-        
+
         //load comment
         HistoryDAO historyDAO = new HistoryDAO();
-       
+
         List<history> historyList = null;
         Map<history, account> historyAccountMap = new LinkedHashMap<>();
 
@@ -121,12 +121,9 @@ public class movieLoad extends HttpServlet {
             System.out.println(ex);
         }
         //save history view of user
-        boolean isViewed=historyDAO.userViewedMovie(userID, Integer.parseInt(id), Integer.parseInt(ep));
-        if (!isViewed) {          
-            if (historyDAO.addHistory(userID,Integer.parseInt(id) , Integer.parseInt(ep), null))
-                daom.increaseView(1,Integer.parseInt(id));
+        if (historyDAO.addHistory(userID, Integer.parseInt(id), Integer.parseInt(ep), null)) {
+            daom.increaseView(1, Integer.parseInt(id));
         }
-
         String title = normalizeVietnamese(m.getTitle());
         response.sendRedirect("movie.jsp?title=" + title + "&ep=" + ep);
     }
