@@ -1,2 +1,2 @@
 # MovieTMT
-Web PRJ For Movies
+Simple Web PRJ For Movies
