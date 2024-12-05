@@ -1,6 +1,8 @@
 # Simple Movie Web Application
 
 This is a simple web application for managing and browsing movies using Java, SQL Server, JSP, and Servlets. The application allows users to view, add, update, and delete movie records from a database, and provides basic search functionality.
+![Screenshot 2024-07-06 124135](https://github.com/user-attachments/assets/48581f4e-9fea-40ba-8cdc-6902f6d870ab)
+
 
 ## Features
 
